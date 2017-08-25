@@ -1,0 +1,14 @@
+
+(* this is a correct program *)
+
+program MyFirstTest
+
+	var a := 2;
+	var c:= true;
+
+	begin
+		
+		c := false;
+	
+		
+	end
