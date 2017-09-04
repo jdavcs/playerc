@@ -11,6 +11,7 @@ import playerc.abstractsyntax.*;
  */
 public class CodeGenerator
 {	
+	/*
    private final String PROC_SUFFIX = "_instance";
    
    private StringBuffer buffer;
@@ -375,8 +376,8 @@ public class CodeGenerator
       buffer.delete(buffer.lastIndexOf(","), buffer.length());
       buffer.append("}");
    }
-   
-   public void visit(RecordInitsExpression x) { /* i am never called :-) */ }  
+   // i am never called
+   public void visit(RecordInitsExpression x) {  }  
 		
    public void visit(CallExpression x)
    {
@@ -682,4 +683,5 @@ public class CodeGenerator
       else
          return typename;     
    }
+   */
 }
