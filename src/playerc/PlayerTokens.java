@@ -9,16 +9,18 @@ import java.util.*;
 
 /**
  * @author Sergey Golitsynskiy
- * @version 3.1 list MUST be 0-based and be sequential: after adding all token
- *          names to a vector, their indexes will be interpreted as their token
- *          types.
+ * @version 3.1
+ */
+
+/*
+ * Comment: list MUST be 0-based and sequential: after adding all token names to
+ * a vector, their indexes will be interpreted as their token types.
  * 
- *          Aug 18 - Added keyword 'string' and token type KeyString = 29
+ * Aug 18 - Added keyword 'string' and token type KeyString = 29
  * 
- *          DO NOT remove single quotes from keywords - there are keywords which
- *          have the same spelling as nonterminals, so the single quotes
- *          distinguish terminals from nonterminals and other elements of the
- *          grammar!
+ * DO NOT remove single quotes from keywords - there are keywords which have the
+ * same spelling as nonterminals, so the single quotes distinguish terminals
+ * from nonterminals and other elements of the grammar!
  */
 public class PlayerTokens {
   // value token types
@@ -87,10 +89,12 @@ public class PlayerTokens {
   public static final int RArrBracket = 58;
   public static final int EOFsymbol = 59;
 
-  private Vector tokenNames; // names of built-in tokens
-  private HashMap wordTokens; // predefined keywords + user-defined identifiers
-                              // (for scanner) (Token objects stored by token
-                              // names)
+  private Vector<String> tokenNames; // names of built-in tokens
+  /*
+   * predefined keywords user-defined identifiers (for scanner) (Token objects
+   * stored by token names)
+   */
+  private HashMap<String, Token> wordTokens;
 
   public PlayerTokens() {
     initTokenNames();
@@ -119,7 +123,7 @@ public class PlayerTokens {
 
   private void initWordTokens() // load all keywords into symbol table
   {
-    wordTokens = new HashMap();
+    wordTokens = new HashMap<String, Token>();
     for (int i = KeyAnd; i <= KeyWrite; i++)
       wordTokens.put(getTokenName(i), new Token(i));
   }
@@ -127,7 +131,7 @@ public class PlayerTokens {
   private void initTokenNames() // loads predefined keywords, symbols and
                                 // punctuation
   {
-    tokenNames = new Vector();
+    tokenNames = new Vector<String>();
     tokenNames.addElement("LITERAL-INTEGER");
     tokenNames.addElement("LITERAL-REAL");
     tokenNames.addElement("LITERAL-STRING");

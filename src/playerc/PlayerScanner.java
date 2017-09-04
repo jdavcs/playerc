@@ -12,6 +12,11 @@ import java.io.Reader;
  * @author Sergey Golitsynskiy
  * @version 3.1
  */
+/*
+ * Scanner based on FSA (see image in docs/ folder)
+ * 
+ * "qx" methods represent states in the FSA.
+ */
 public class PlayerScanner extends Scanner {
   public static final int MAX_ID_LENGTH = 255;
   public static final int MAX_INT_LENGTH = (int) (Math.pow(2, 31) - 1);
