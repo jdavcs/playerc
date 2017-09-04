@@ -2,8 +2,10 @@ package playerc;
 
 import java.util.*;
 /**
- * Author: sergei
- * Created: Aug 13, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Aug 26 2005
+ * modified Sep 04 2017
  * Comment: token type list MUST be 0-based and be sequential: after adding all token names
  * 			to a vector, their indexes will be interpreted as their token types.
  * 

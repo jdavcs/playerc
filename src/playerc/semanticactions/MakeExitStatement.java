@@ -5,8 +5,10 @@ import playerc.*;
 import playerc.abstractsyntax.ExitStatement;
 
 /**
- * Author: 		Sergei Golitsinski
- * Created: 	May 14, 2006 2:20:11 PM
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  May 14 2006
+ * modified Sep 03 2017
  */
 public class MakeExitStatement extends SemanticAction
 {

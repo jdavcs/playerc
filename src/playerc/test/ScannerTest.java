@@ -12,8 +12,10 @@ import playerc.Token;
 
 
 /**
- * Author: sergei
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
  * Created: Jun 18, 2005
+ * modified Sep 04 2017 
  */
 public class ScannerTest extends TestCase
 {

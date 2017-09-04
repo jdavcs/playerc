@@ -1,8 +1,10 @@
 package playerc;
 
 /**
- * Author: 		Sergei Golitsinski
- * Created: 	May 23, 2006 9:33:36 PM
+ * @author Sergey Golitsynskiy
+ * @version 3.1 
+ * created  May 23 2006
+ * modified Sep 04 2017
  */
 public class ArrayDataType extends ConstructedDataType
 {

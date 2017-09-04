@@ -5,8 +5,10 @@ import java.io.*;
 import playerc.abstractsyntax.Program;
 
 /**
- * Author: sergei
- * Created: Oct 11, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Oct 11 2005
+ * modified Sep 04 2017
  * Comment: main takes 1 or 2 parameters: 1) input path; 2) output path (optional)
  * 			Both paths can be either relative or absolute (i.e. the file name will be enough)
  */

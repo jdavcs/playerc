@@ -3,8 +3,10 @@ package playerc;
 import java.util.*;
 
 /**
- * Author: 		Sergei Golitsinski
- * Created: 	May 23, 2006 7:39:41 PM
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  May 23 2006
+ * modified Sep 04 2017
  */
 public class SymbolTable
 {

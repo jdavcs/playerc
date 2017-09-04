@@ -3,8 +3,10 @@ package playerc;
 import java.util.*;
 
 /**
- * Author: sergei
- * Created: Sep 2, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Sep 02 2005
+ * modified Sep 04 2017
  */
 public class RecordSymbolTables
 {

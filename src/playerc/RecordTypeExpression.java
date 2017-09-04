@@ -3,8 +3,10 @@ package playerc;
 import java.util.HashMap;
 
 /**
- * Author: sergei
- * Created: Aug 26, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Aug 26 2005
+ * modified Sep 04 2017
  */
 public class RecordTypeExpression extends TypeExpression
 {

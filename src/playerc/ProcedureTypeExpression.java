@@ -3,8 +3,10 @@ package playerc;
 import playerc.abstractsyntax.*;
 
 /**
- * Author: sergei
- * Created: Sep 5, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Sep 05 2005
+ * modified Sep 04 2017
  */
 public class ProcedureTypeExpression extends TypeExpression
 {

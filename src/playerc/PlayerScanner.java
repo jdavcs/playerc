@@ -3,8 +3,10 @@ package playerc;
 import java.io.*;
 
 /**
- * Author: sergei
- * Created: Jun 22, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Jun 22 2005
+ * modified Sep 04 2017
  */
 public class PlayerScanner extends Scanner
 {

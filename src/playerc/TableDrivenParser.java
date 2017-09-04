@@ -8,8 +8,10 @@ import playerc.semanticactions.*;
 
 
 /**
- * Author: sergei
- * Created: Jul 20, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Jul 20 2005
+ * modified Sep 04 2017
  */
 
 public class TableDrivenParser extends Parser

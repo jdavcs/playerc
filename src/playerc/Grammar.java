@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Author: 		Sergei Golitsinski
- * Created: 	Jul 15, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Jul 15 2005
+ * modified Sep 04 2017
  * Comment: 	Grammar MUST start with the start symbol production.
  * 					"derives", "or", and "null" symbols are passed to the constructor.
  */

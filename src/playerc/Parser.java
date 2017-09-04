@@ -6,8 +6,10 @@ import playerc.abstractsyntax.AbstractSyntaxTree;
 
 
 /**
- * Author: sergei
- * Created: Jul 3, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Jul 03 2005
+ * modified Sep 04 2017
  */
 public abstract class Parser
 {

@@ -3,8 +3,10 @@ package playerc.abstractsyntax;
 import java.util.*;
 
 /**
- * Author: sergei
- * Created: Aug 7, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Aug 07 2005
+ * modified Sep 04 2017
  * Comment: a make-list object will continuosly pop the semantic stack and accum ASTs 
  * 			until it pops an AST of the wrong type
  */

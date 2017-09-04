@@ -5,8 +5,10 @@ import java.lang.reflect.Method;
 import junit.framework.TestCase;
 
 /**
- * Author: 		Sergei Golitsinski
- * Created: 	Mar 25, 2006 4:29:40 PM
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Mar 25 2006
+ * modified Sep 04 2017 
  */
 public class BaseTestCase extends TestCase
 {

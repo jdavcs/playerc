@@ -5,11 +5,13 @@ import java.util.*;
 
 
 /** * 
- * Author: 		Sergei Golitsinski
- * Created: 	Jul 13, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Jul 13 2005
+ * modified Sep 04 2017
  * Comment:	used to read a grammar file and return a collection of production objects
- * Modified: 	March 25 2006: the only requirement to the source file is to have spaces between symbols: A -> b c | c b
- * 					Now it's okay to have leading spaces and multiple "ORs" on the same line
+ *          the only requirement to the source file is to have spaces between symbols: A -> b c | c b
+ * 			  now it's okay to have leading spaces and multiple "ORs" on the same line
  * 
  *    Grammar requirements: all terminals are lower case without any quotation marks! Non-lower case are: 
  *    - nonterminals ("XYZ") 

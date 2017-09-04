@@ -1,8 +1,10 @@
 package playerc.abstractsyntax;
 
 /**
- * Author: sergei
- * Created: Aug 21, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Aug 21 2005
+ * modified Sep 04 2017
  */
 public class MinusExpression extends BinaryOpExpression
 {

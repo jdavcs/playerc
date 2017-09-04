@@ -1,8 +1,10 @@
 package playerc;
 
 /**
- * Author: 		Sergei Golitsinski
- * Created: 	May 23, 2006 10:08:56 PM
+ * @author Sergey Golitsynskiy
+ * @version 3.1
+ * created  May 23 2006
+ * modified Sep 04 2017
  */
 public abstract class ConstructedDataType extends DataType
 {

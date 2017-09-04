@@ -1,8 +1,10 @@
 package playerc.abstractsyntax;
 
 /**
- * Author: 		Sergei Golitsinski
- * Created: 	May 15, 2006 7:48:54 PM
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  May 15 2006
+ * modified Sep 04 2017
  */
 public class PlusExpression extends BinaryOpExpression
 {

@@ -4,8 +4,10 @@ import java.util.Vector;
 
 
 /**
- * Author: sergei
- * Created: Jul 19, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Jul 19 2005
+ * modified Sep 04 2017
  * Comment: all symbols (terminals/nonterminals/sem actions) are implemented as strings
  */
 public class ParsingTable

@@ -5,8 +5,10 @@ import playerc.SemanticAction;
 
 
 /**
- * Author: sergei
- * Created: Aug 13, 2005
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  Aug 13 2005
+ * modified Sep 03 2017
  */
 public class SemanticActionFactory
 {

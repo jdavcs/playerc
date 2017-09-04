@@ -5,8 +5,10 @@ import java.util.Stack;
 import playerc.abstractsyntax.*;
 
 /**
- * Author: 		Sergei Golitsinski
- * Created: 	May 16, 2006 7:33:40 PM
+ * @author  Sergey Golitsynskiy
+ * @version 3.1
+ * created  May 16 2006
+ * modified Sep 04 2017
  */
 public class TypeChecker implements Visitor
 {
