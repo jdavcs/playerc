@@ -1,52 +1,69 @@
+/*
+ * This code is part of a compiler for the Player programming language
+ * Created: 2005-2006
+ * Revised: 09/2017
+ */
 package playerc;
 
 /**
- * @author  Sergey Golitsynskiy
+ * @author Sergey Golitsynskiy
  * @version 3.1
- * created  Jun 17 2005
- * modified Sep 04 2017
  */
 
-public class Token 
-{	
-	private int type;
-	private int ival;
-	private double dval;
-	private String sval;
+public class Token {
+  private int type;
+  private int ival;
+  private double dval;
+  private String sval;
 
-	public Token(int type) { this(type, 0, 0, ""); }
-	
-	public Token(int type, int value) { this(type, value, 0, ""); }
-		
-	public Token(int type, double value) { this(type, 0, value, ""); }
-		
-	public Token(int type, String value) { this(type, 0, 0, value); }
-	
-	public String toString() //check this
-	{
-		if (type == 1)
-			return type + "(" + ival + ")";
-		else if (type == 2)
-			return type + "(" + dval + ")";		
-		else if((type == 3) || (type == 4))
-			return type + "(" + sval + ")";	
-		else
-		   return "" + type;
-	}
-	
-	public int type() { return type; }
-	
-	public int getIValue() { return ival; }
-	
-	public double getDValue() { return dval; }
-	
-	public String getSValue() { return sval; }	
+  public Token(int type) {
+    this(type, 0, 0, "");
+  }
 
-	private Token(int type, int iv, double dv, String sv)
-	{
-	   this.type = type;
-	   ival = iv;
-	   dval = dv;
-	   sval = sv;
-	}
+  public Token(int type, int value) {
+    this(type, value, 0, "");
+  }
+
+  public Token(int type, double value) {
+    this(type, 0, value, "");
+  }
+
+  public Token(int type, String value) {
+    this(type, 0, 0, value);
+  }
+
+  public String toString() // check this
+  {
+    if (type == 1)
+      return type + "(" + ival + ")";
+    else if (type == 2)
+      return type + "(" + dval + ")";
+    else if ((type == 3) || (type == 4))
+      return type + "(" + sval + ")";
+    else
+      return "" + type;
+  }
+
+  public int type() {
+    return type;
+  }
+
+  public int getIValue() {
+    return ival;
+  }
+
+  public double getDValue() {
+    return dval;
+  }
+
+  public String getSValue() {
+    return sval;
+  }
+
+  private Token(int type, int iv, double dv, String sv) {
+    this.type = type;
+    ival = iv;
+    dval = dv;
+    sval = sv;
+  }
 }

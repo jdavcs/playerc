@@ -1,17 +1,20 @@
+/*
+ * This code is part of a compiler for the Player programming language
+ * Created: 2005-2006
+ * Revised: 09/2017
+ */
 package playerc;
 
 /**
- * @author  Sergey Golitsynskiy
+ * @author Sergey Golitsynskiy
  * @version 3.1
- * created  Jul 19 2005
- * modified Sep 04 2017
  */
-public class ParsingException extends Exception
-{
-   public ParsingException( String s ) { super(s); }
+public class ParsingException extends Exception {
+  public ParsingException(String s) {
+    super(s);
+  }
 
-   public String toString()
-   {
-       return "PARSING EXCEPTION -- " + super.toString();
-   }
+  public String toString() {
+    return "PARSING EXCEPTION -- " + super.toString();
+  }
 }

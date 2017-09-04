@@ -1,20 +1,28 @@
+/*
+ * This code is part of a compiler for the Player programming language
+ * Created: 2005-2006
+ * Revised: 09/2017
+ */
 package playerc;
 
 import java.util.Stack;
 
 /**
- * @author  Sergey Golitsynskiy
+ * @author Sergey Golitsynskiy
  * @version 3.1
- * created  Jul 21 2005
- * modified Sep 04 2017
  */
-public class PushSymbol implements ParseAction
-{
-   private String symbol;
+public class PushSymbol implements ParseAction {
+  private String symbol;
 
-   public PushSymbol(String symbol) { this.symbol = symbol; }
+  public PushSymbol(String symbol) {
+    this.symbol = symbol;
+  }
 
-   public void execute(Stack stack) { stack.push(symbol); }
+  public void execute(Stack stack) {
+    stack.push(symbol);
+  }
 
-   public String toString() { return " " +  symbol; }
+  public String toString() {
+    return " " + symbol;
+  }
 }

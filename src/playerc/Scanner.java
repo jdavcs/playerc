@@ -1,3 +1,8 @@
+/*
+ * This code is part of a compiler for the Player programming language
+ * Created: 2005-2006
+ * Revised: 09/2017
+ */
 package playerc;
 
 import java.io.IOException;
@@ -6,75 +11,75 @@ import java.io.Reader;
 
 /**
  * @author Sergey Golitsynskiy
- * @version 3.1 -- created: 2005-06-17 modified: 2017-09-04
+ * @version 3.1
  */
 public abstract class Scanner {
-	private PushbackReader source;
-	private Token lookahead;
-	private int lineNumber;
+  private PushbackReader source;
+  private Token lookahead;
+  private int lineNumber;
 
-	public Scanner(Reader in) {
-		source = new PushbackReader(in);
-		lookahead = null;
-		lineNumber = 1;
-	}
+  public Scanner(Reader in) {
+    source = new PushbackReader(in);
+    lookahead = null;
+    lineNumber = 1;
+  }
 
-	public Token peek() throws IOException, LexicalException {
-		if (lookahead == null)
-			lookahead = getNextToken();
-		return lookahead;
-	}
+  public Token peek() throws IOException, LexicalException {
+    if (lookahead == null)
+      lookahead = getNextToken();
+    return lookahead;
+  }
 
-	public Token nextToken() throws IOException, LexicalException {
-		Token answer;
-		if (lookahead != null) {
-			answer = lookahead;
-			lookahead = null;
-		} else
-			answer = getNextToken();
-		return answer;
-	}
+  public Token nextToken() throws IOException, LexicalException {
+    Token answer;
+    if (lookahead != null) {
+      answer = lookahead;
+      lookahead = null;
+    } else
+      answer = getNextToken();
+    return answer;
+  }
 
-	public int lineNumber() {
-		return lineNumber;
-	}
+  public int lineNumber() {
+    return lineNumber;
+  }
 
-	protected int getNextByte() throws IOException {
-		int x;
-		while (true) {
-			x = source.read();
-			if (x == '\n')
-				lineNumber++;
-			if (x == -1)
-				return -1;
-			if (!isWhitespace((char) x))
-				return x;
-		}
-	}
+  protected int getNextByte() throws IOException {
+    int x;
+    while (true) {
+      x = source.read();
+      if (x == '\n')
+        lineNumber++;
+      if (x == -1)
+        return -1;
+      if (!isWhitespace((char) x))
+        return x;
+    }
+  }
 
-	public boolean isWhitespace(char c) {
-		return c == ' ' || c == '\b' || c == '\f' || c == '\n' || c == '\r' || c == '\t';
-	}
+  public boolean isWhitespace(char c) {
+    return c == ' ' || c == '\b' || c == '\f' || c == '\n' || c == '\r' || c == '\t';
+  }
 
-	public boolean isNumericDigit(char c) {
-		return ('0' <= c) && (c <= '9');
-	}
+  public boolean isNumericDigit(char c) {
+    return ('0' <= c) && (c <= '9');
+  }
 
-	public boolean isLetter(char c) {
-		return ((65 <= c) && (c <= 90)) || ((97 <= c) && (c <= 122));
-	}
+  public boolean isLetter(char c) {
+    return ((65 <= c) && (c <= 90)) || ((97 <= c) && (c <= 122));
+  }
 
-	public boolean isStringChar(char c) {
-		return ((32 <= c) && (c <= 126) && (c != '"'));
-	}
+  public boolean isStringChar(char c) {
+    return ((32 <= c) && (c <= 126) && (c != '"'));
+  }
 
-	protected char read() throws IOException {
-		return (char) source.read();
-	}
+  protected char read() throws IOException {
+    return (char) source.read();
+  }
 
-	protected void unread(char c) throws IOException {
-		source.unread(c);
-	}
+  protected void unread(char c) throws IOException {
+    source.unread(c);
+  }
 
-	protected abstract Token getNextToken() throws IOException, LexicalException;
+  protected abstract Token getNextToken() throws IOException, LexicalException;
 }

@@ -1,18 +1,24 @@
+/*
+ * This code is part of a compiler for the Player programming language
+ * Created: 2005-2006
+ * Revised: 09/2017
+ */
 package playerc;
 
 import java.util.Stack;
 
 /**
- * @author  Sergey Golitsynskiy
+ * @author Sergey Golitsynskiy
  * @version 3.1
- * created  Jul 21 2005
- * modified Sep 04 2017
  */
-public class PushNothing implements ParseAction
-{
-   public PushNothing() {}
-   
-   public void execute(Stack stack) {}
+public class PushNothing implements ParseAction {
+  public PushNothing() {
+  }
 
-   public String toString() { return "(empty)"; }
+  public void execute(Stack stack) {
+  }
+
+  public String toString() {
+    return "(empty)";
+  }
 }
