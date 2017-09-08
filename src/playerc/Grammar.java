@@ -33,6 +33,7 @@ public class Grammar {
 
   public Grammar(String file, String nullSymbol, String derivesSymbol, String orSymbol) {
     this.nullSymbol = nullSymbol;
+    
     GrammarReader r = new GrammarReader(derivesSymbol, orSymbol);
     try {
       productions = r.getProductions(file, false);

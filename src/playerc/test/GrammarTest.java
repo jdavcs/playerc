@@ -17,11 +17,11 @@ import playerc.Grammar;
 public class GrammarTest extends BaseTestCase {
 
   public void testPlayerGrammar() {
-    Grammar g = new Grammar("../playerc/playergrammar", "EMPTY", "->", "|");
+    Grammar g = new Grammar("playergrammar", "EMPTY", "->", "|");
 
     Vector t = g.terminals();
-    for (int i = 0; i < t.size(); i++)
-      System.out.println(t.elementAt(i));
+    //for (int i = 0; i < t.size(); i++)
+      //System.out.println(t.elementAt(i));
 
     assertEquals(41, g.numberOfNonterminals());
     assertEquals(61, g.numberOfTerminals());
@@ -110,7 +110,7 @@ public class GrammarTest extends BaseTestCase {
     assertFalse(g.isTerminal("RECORD-INIT"));
     assertFalse(g.isTerminal("RECORD-INITS-MORE-OPT"));
 
-    // System.out.println(g.getSemanticActions());
+    //System.out.println(g.getSemanticActions());
   }
 
   public void testGetStartSymbol() {

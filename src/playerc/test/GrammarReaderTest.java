@@ -19,6 +19,7 @@ public class GrammarReaderTest extends BaseTestCase {
   public void testRemoveLHS() {
     GrammarReader r = new GrammarReader("->", "|");
     String method = "removeLHS";
+    @SuppressWarnings("rawtypes")
     Class[] formals = { String.class };
 
     String[] params1 = { " abc -> x | y | z " };
@@ -37,6 +38,7 @@ public class GrammarReaderTest extends BaseTestCase {
   public void testMakeLHS() {
     GrammarReader r = new GrammarReader("->", "|");
     String method = "makeLHS";
+    @SuppressWarnings("rawtypes")
     Class[] formals = { String.class, String.class };
 
     String[] params1 = { null, "abc -> x" };
@@ -63,6 +65,7 @@ public class GrammarReaderTest extends BaseTestCase {
   public void testMakeRHS() {
     GrammarReader r = new GrammarReader("->", "|");
     String method = "makeRHS";
+    @SuppressWarnings("rawtypes")
     Class[] formals = { String.class, boolean.class };
 
     Object[] params1 = { " ab MAKE-action cd ", Boolean.FALSE };
@@ -74,8 +77,8 @@ public class GrammarReaderTest extends BaseTestCase {
     String expected2_2 = "MAKE-action";
     String expected2_3 = "cd";
 
-    Vector result1 = (Vector) invokeMethod(r, method, formals, params1);
-    Vector result2 = (Vector) invokeMethod(r, method, formals, params2);
+    Vector<?> result1 = (Vector<?>) invokeMethod(r, method, formals, params1);
+    Vector<?> result2 = (Vector<?>) invokeMethod(r, method, formals, params2);
 
     assertEquals(2, result1.size());
     assertEquals(3, result2.size());
@@ -90,10 +93,11 @@ public class GrammarReaderTest extends BaseTestCase {
   public void testGetProductions() throws IOException, Exception {
     GrammarReader r = new GrammarReader("->", "|");
     String method = "getProductions";
+    @SuppressWarnings("rawtypes")
     Class[] formals = { String.class, boolean.class };
 
     Object[] params1 = { "test/source/TestGrammarReader1.txt", Boolean.FALSE };
-    Vector result1 = (Vector) invokeMethod(r, method, formals, params1);
+    Vector<?> result1 = (Vector<?>) invokeMethod(r, method, formals, params1);
 
     assertEquals(6, result1.size());
     Production p1_1 = (Production) result1.elementAt(0);
@@ -131,7 +135,7 @@ public class GrammarReaderTest extends BaseTestCase {
     assertEquals("d1", p1_6.rhs().elementAt(1));
 
     Object[] params2 = { "test/source/TestGrammarReader1.txt", Boolean.TRUE };
-    Vector result2 = (Vector) invokeMethod(r, method, formals, params2);
+    Vector<?> result2 = (Vector<?>) invokeMethod(r, method, formals, params2);
 
     assertEquals(6, result2.size());
     Production p2_1 = (Production) result2.elementAt(0);

@@ -1,0 +1,11 @@
+A	-> B C D E
+
+B	-> b 1
+	|  null
+
+C	-> c 2
+	|  null
+
+D	-> d 3
+
+E	-> e 4 3

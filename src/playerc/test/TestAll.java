@@ -18,13 +18,17 @@ public class TestAll {
     suite.addTest(new TestSuite(ScannerTest.class));
     suite.addTest(new TestSuite(TokenTest.class));
     suite.addTest(new TestSuite(PlayerTokensTest.class));
-    // suite.addTest(new TestSuite(TestGrammar.class));
-    // suite.addTest(new TestSuite(TestGrammarReader.class));
+    suite.addTest(new TestSuite(ProductionTest.class));
+    suite.addTest(new TestSuite(GrammarReaderTest.class));    
+    suite.addTest(new TestSuite(GrammarTest.class));
+    
 
     // suite.addTest(new TestSuite(TestParsingTable.class));
     // suite.addTest(new TestSuite(TestPlayerParsingTable.class));
-    // suite.addTest(new TestSuite(TestProduction.class));
+    // 
+    
     // suite.addTest(new TestSuite(TestTypeChecker.class));
+    
     // suite.addTest(new TestSuite(TestCodeGenerator.class));
 
     return suite;

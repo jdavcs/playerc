@@ -102,19 +102,19 @@ public class GrammarReader {
     return rhs;
   }
 
-  /*
-   * //alternative implementation: uses a filereader; in this case, include the
-   * package name in the path public Vector getProductionsFromFile(String file,
-   * boolean includeSemActions) throws IOException, Exception { Vector p = new
-   * Vector(); BufferedReader reader = null; try { reader = new
-   * BufferedReader(new FileReader(file)); String lhs = null; String rhs = null;
-   * while(true) { String line = reader.readLine(); if (line == null) break; if
-   * (line.length() > 0) { lhs = makeLHS(lhs, line); rhs = removeLHS(line);
-   * StringTokenizer st = new StringTokenizer(rhs, orSymbol); //splits
-   * "b c | c d" into "b c" and "c d" while (st.hasMoreTokens()) { String token
-   * = st.nextToken().trim(); if (token.length() > 0) //leading "or" will cause
-   * an empty token p.addElement(new Production(lhs, makeRHS(token,
-   * includeSemActions))); } } } } catch (FileNotFoundException e) {
-   * System.err.println(e.getMessage()); } return p; }
-   */
+//  // alternative implementation: uses a filereader; in this case, include the
+//  // package name in the path
+//  public Vector getProductionsFromFile(String file, boolean includeSemActions) throws IOException, Exception { 
+//    Vector p = new Vector(); 
+//    BufferedReader reader = null; 
+//    try { reader = new
+//   BufferedReader(new FileReader(file)); String lhs = null; String rhs = null;
+//   while(true) { String line = reader.readLine(); if (line == null) break; if
+//   (line.length() > 0) { lhs = makeLHS(lhs, line); rhs = removeLHS(line);
+//   StringTokenizer st = new StringTokenizer(rhs, orSymbol); //splits
+//   "b c | c d" into "b c" and "c d" while (st.hasMoreTokens()) { String token
+//   = st.nextToken().trim(); if (token.length() > 0) //leading "or" will cause
+//   an empty token p.addElement(new Production(lhs, makeRHS(token,
+//   includeSemActions))); } } } } catch (FileNotFoundException e) {
+//   System.err.println(e.getMessage()); } return p; }
 }
