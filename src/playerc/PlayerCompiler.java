@@ -46,8 +46,7 @@ public class PlayerCompiler {
     TypeChecker checker = new TypeChecker();
     checker.check(program);
     if (checker.foundErrors() == 0) {
-      new CodeGenerator(dirOut).generate(program);
-      ;
+      new CodeGenerator(dirOut).generate(program);      
     }
   }
 }
