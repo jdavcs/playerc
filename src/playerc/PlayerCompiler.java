@@ -19,30 +19,35 @@ public class PlayerCompiler {
   public PlayerCompiler() {
   }
 
-  public void run() {
-    TableDrivenParser parser = makeParser("compiler/testParser4.txt");
-    Program program = (Program) parser.parse();
-
-    try {
-      TypeChecker tc = new TypeChecker();
-      tc.check(program);
-
-      // CodeGenerator generator = new CodeGenerator(target);
-      // generator.generate(program);
-    } catch (Exception e) {
-      System.out.println(e);
+  /**
+   * @param args
+   *          Required: path to source file; path to output directory
+   * @throws Exception
+   */
+  public static void main(String[] args) throws Exception {
+    if (args.length == 2) {
+      new PlayerCompiler().run(args[0], args[1]);
+    } else {
+      throw new Exception("required arguments missing: input file + output directory");
     }
   }
 
-  private TableDrivenParser makeParser(String file) {
+  public void run(String fileIn, String dirOut) {
     PlayerScanner source = null;
     try {
-      source = new PlayerScanner(new BufferedReader(new FileReader(file)));
+      source = new PlayerScanner(new BufferedReader(new FileReader(fileIn)));
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-    Grammar gP = new Grammar("Compiler/playerGrammar.txt", "�", "->");
-    return new TableDrivenParser(source, gP, new PlayerTokens());
-  }
 
+    Grammar g = new Grammar("playerc/playerGrammar.txt", "�", "->");
+    TableDrivenParser parser = new TableDrivenParser(source, g, new PlayerTokens());
+    Program program = (Program) parser.parse();
+    TypeChecker checker = new TypeChecker();
+    checker.check(program);
+    if (checker.foundErrors() == 0) {
+      new CodeGenerator(dirOut).generate(program);
+      ;
+    }
+  }
 }

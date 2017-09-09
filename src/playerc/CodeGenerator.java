@@ -86,12 +86,12 @@ public class CodeGenerator implements Visitor {
   private final String PROC_SUFFIX = "_instance";
 
   private StringBuffer buffer;
-  private String output;
+  private String dirOut;
   private int tabs;
   private String mainClassName;
 
-  public CodeGenerator(String subfolder) {
-    this.output = subfolder;
+  public CodeGenerator(String dirOut) {
+    this.dirOut = dirOut;
     buffer = new StringBuffer();
     tabs = 0;
     mainClassName = null;
@@ -99,7 +99,7 @@ public class CodeGenerator implements Visitor {
 
   private void writeFile(String text, String fileName) {
     try {
-      BufferedWriter fileWriter = new BufferedWriter(new FileWriter(output + "/" + fileName));
+      BufferedWriter fileWriter = new BufferedWriter(new FileWriter(dirOut + "/" + fileName));
       fileWriter.write(text);
       fileWriter.flush();
     } catch (IOException e) {
@@ -120,7 +120,6 @@ public class CodeGenerator implements Visitor {
 
   public void visit(Program x) {
     mainClassName = x.name().toString();
-    buffer.append("package compiler." + output + ";\n\n");
     buffer.append("public class " + mainClassName + "\n");
     buffer.append("{\n");
     tabs++;
@@ -205,7 +204,6 @@ public class CodeGenerator implements Visitor {
       String className = x.typename().toString();
 
       StringBuffer buffer2 = new StringBuffer();
-      buffer2.append("package compiler." + output + ";\n\n");
       buffer2.append("public class " + className + "\n");
       buffer2.append("{\n");
 

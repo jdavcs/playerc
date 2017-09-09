@@ -1,5 +1,3 @@
-package compiler.output;
-
 public class rec1
 {
 	public String name;

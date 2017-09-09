@@ -1,5 +1,3 @@
-package compiler.output;
-
 public class BinaryInsertionSorter
 {
 	public static void main( String[] args )

@@ -24,6 +24,7 @@ import playerc.abstractsyntax.Program;
 public class TypeCheckerTest extends TestCase {
   private TypeChecker checker;
 
+  //This test will throw 39 exceptions - this is expected behavior.
   public void testOne() {
     checker.check(makeAST("input/test/testTypeChecker1.txt"));
     assertEquals(39, checker.foundErrors());

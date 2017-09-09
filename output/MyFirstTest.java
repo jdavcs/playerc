@@ -1,5 +1,3 @@
-package compiler.output;
-
 public class MyFirstTest
 {
 	public static void main( String[] args )
