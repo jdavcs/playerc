@@ -1,15 +1,16 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.Stack;
 
-import playerc.abstractsyntax.*;
-import playerc.semanticactions.*;
+import playerc.abstractsyntax.AbstractSyntaxTree;
+import playerc.abstractsyntax.Program;
+import playerc.abstractsyntax.SemanticActionFactory;
 
 /**
  * @author Sergey Golitsynskiy
@@ -19,19 +20,20 @@ import playerc.semanticactions.*;
 public class TableDrivenParser extends Parser {
   private Grammar grammar;
   private PlayerTokens tokens;
-  // private Token previousToken; //to be used in analysing declarations
+  private Token previousToken; // to be used in analysing declarations
+  // private SymbolTable symbols; - for now...
 
   public TableDrivenParser(Scanner source, Grammar g, PlayerTokens t) {
     super(source);
     grammar = g;
     tokens = t;
-    // previousToken = null;
+    previousToken = null;
   }
 
   protected AbstractSyntaxTree parseProgram()
       throws SemanticException, ParsingException, LexicalException, IOException {
     ParsingTable table = grammar.getParsingTable();
-    Stack stack = new Stack(); // parsing stack
+    Stack stack = new Stack();
     stack.push(Grammar.END_MARKER);
     stack.push(grammar.getStartSymbol());
     Stack semanticStack = new Stack(); // semantic stack
@@ -41,7 +43,7 @@ public class TableDrivenParser extends Parser {
       Token nextToken = source().peek(); // from input
 
       // this is a string. it can be a nonterminal, a terminal, or a sem.action
-      String nextSymbol = (String) stack.pop(); // from parsing stack
+      String nextSymbol = (String) stack.pop(); // from parse stack
 
       if (isTerminal(nextSymbol)) {
         int symbolType = tokens.getTokenType(nextSymbol);
@@ -57,7 +59,7 @@ public class TableDrivenParser extends Parser {
         ParseAction action = table.lookup(nextSymbol, tokens.getTokenName(nextToken.type()));
         action.execute(stack);
       }
-      // previousToken = nextToken;
+      previousToken = nextToken;
 
     } while (!stack.empty());
 

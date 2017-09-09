@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
@@ -10,18 +10,18 @@ package playerc.abstractsyntax;
  * @version 3.1
  */
 public class WriteStatement extends Statement {
-  private ExpressionList exps;
+  private ExpressionList expList;
 
-  public WriteStatement(ExpressionList exps, int lineNumber) {
+  public WriteStatement(ExpressionList list, int lineNumber) {
     super(lineNumber);
-    this.exps = exps;
-  }
-
-  public ExpressionList expressions() {
-    return exps;
+    expList = list;
   }
 
   public void accept(Visitor v) {
     v.visit(this);
+  }
+
+  public ExpressionList expressionList() {
+    return expList;
   }
 }

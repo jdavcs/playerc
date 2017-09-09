@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.test;
@@ -360,7 +360,7 @@ public class ScannerTest extends TestCase {
 
   private void runSingleNoValTokenTest(String text, int type) throws IOException, LexicalException {
     Scanner scanner = makeScanner(text);
-    Token t1 = new Token(type);
+    Token t1 = new Token(type, 1);
     Token t2 = scanner.nextToken();
     assertEquals(t1.type(), t2.type());
   }

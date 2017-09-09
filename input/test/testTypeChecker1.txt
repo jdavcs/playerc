@@ -1,0 +1,244 @@
+program MyFirstTest
+
+
+(* -------------------------type declarations----------------------------- *)
+
+    type 
+	    arr1 = array of string;  	(* simple array decl *)  
+	    arr5 = array of real;		(* simple array decl *)
+	    arr6 = array of integer;	(* simple array decl *)	    
+	    arr7 = array of integer;	(* simple array decl *)	    
+	    	    
+    	rec1 = record				(* simple record decl *)
+    		name : string;
+	    	age  : integer;
+    		cool : boolean;
+    		v1	 : real;			(* member v1 is not a duplicate: separate namespace *)
+	    end;
+	    
+	   	rec2 = record				(* record with array and record members *)
+    		foo : arr1;
+    		bar : rec1;
+    		name: real;				(* member name is not a duplicate: separate records *)
+ 	    end;	 
+ 	    
+ 	    rec3 = record				(* recursive record *)	
+ 	    	value : integer;
+ 	    	next  : rec3;
+ 	    end;   
+	    
+	    arr2 = array of arr1;		(* array of records decl *)  
+	    
+	(* -------------------------catch exceptions in type declarations------------------------- *)	   
+	
+		arr3 = array of nosuchtype;	(* type doesn't exist *) 
+		
+		rec3 = record				(* redeclaring rec3 symbol *)
+    		foo : integer;
+    		foo : real; 			(* duplicate record members *)
+ 	    end;	
+		
+		
+(* -------------------------var declarations----------------------------- *)
+	var
+		v1, v2 : boolean := true; 	(* multiple ids, explicit boolean *)
+		v3 : integer := 1; 			(* explicit integer *)
+		v4 : real := 2.1; 			(* explicit real *)
+		v5 : string := "test";		(* string *)
+	
+		v6 := false;				(* implicit boolean *)
+		v7 := 3;					(* implicit integer *)
+		v8 := 4.7;					(* implicit real *)
+	
+		v9 := v8;					(* implicit real from id *)
+		v10 : real := 3;			(* integer to real conversion *)
+		
+		v30 := arr1[< 2 of "abc", "xyz" >];		(* array construction *)
+		v40 := arr1[< "a", "b" >];
+		v32 := arr5[< 3 of 5.4, 6 >];			(* integer to real conversion in array construction *)
+		
+		v34 : real := v32[0];					(* lookup lvalue *)
+		
+		v35 := arr7[< 1, 2, 3, 4 >]; 			(* used in next decl *)
+		v36 : string := v30[arr7[1]]; 			(* nested lookup lvalue *)
+		
+		v37 := rec1{ name := "sergei"; age := 100; cool := true; v1 := 42 }; (* record construction *)
+		
+	(* -------------------------catch exceptions in var declarations------------------------- *)
+
+		v5 := 123;	 				(* redeclaring a variable *)
+		v11 : integer  := true;		(* explicit/implicit type mismatch*)
+		v12 : integer := 3.5;		(* cannot convert real to integer *)
+		v13 : nosuchtype := 1;		(* type doesn't exist *)
+		v14 := v15;					(* referenced variable not declared *)
+		
+		v31 := arr1[< 2 of "abc", 3 >];		(* array element of wrong type *)		
+		v33 := arr6[< 1, 3.2 >];			(* array element of wrong type: cannot convert integer to real  *)	
+		
+		v38 := rec1{ abc := "sergei"; age := 100; cool := true; v1 := 42 }; (* record construction with wrong member *)
+		v39 := rec1{ name := 42; age := 100; cool := true; v1 := 42 }; (* record construction with wrong member type *)
+		
+	
+		
+
+
+(* -------------------------procedure declarations----------------------------- *)	
+
+	procedure 
+		proc1() begin end;			(* empty procedure *) 
+	
+	 	proc2(a, b : real; c : string) begin end;	(* empty procedure w/params *) 	
+	 	
+	 	proc3(a : integer)
+ 			var v1 := true;			(* variable v1 is not a duplicate: different scope *)
+	 		begin
+	 			a := a + 1;
+	 		end;
+	 		
+	 	proc4() : integer			(* nested procedures + same var names from different scopes *)
+	 		var proc4 := "different scope";
+	 		procedure proc4a() : integer
+		 		var proc4a := "different scope";
+	 			procedure proc4b() : integer
+		 			var proc4b := "different scope";
+	 				procedure proc4c() : integer
+		 				var proc4c := "different scope";
+	 					begin
+	 						return 1;
+		 				end;
+		 			begin
+		 				return proc4c() + 2;
+	 				end;
+	 			begin
+	 				return proc4b() + 3;
+	 			end;
+ 			begin
+ 				return proc4a() + 4;
+ 			end;
+ 			
+ 		proc5()						(* recursive procedure + calling procedure declared later *)
+ 			begin
+ 				proc5();
+ 				proc6();
+ 			end;
+ 			
+ 		proc6()
+ 			begin 
+ 			end;
+			
+
+	(* -------------------------catch exceptions in procedure declarations------------------------- *)
+	
+		v1() begin end;				(* redeclaring a symbol; also will catch missing return since v1 is an integer *)
+		
+	 	proc10() : integer			(* no return statement *)
+	 		begin
+	 		end;
+	 		
+	 	proc11()					(* illegal return statement *)
+	 		begin
+	 			return 5;
+	 		end;	 
+	 		
+	 	proc12() : string			(* return statement of wrong type *)
+	 		begin
+	 			return 5;
+	 		end;		 
+	 		
+
+
+(* ------------------------------------------main body--------------------------------------- *)		 						
+	 		
+	begin
+	
+		v3 := 3 + 4 + 5;			(* plus expression *)
+		v3 := 3 + 4 - 5;			(* minus expression *)
+		v3 := 3 * (4 + 5);			(* mult expression + parenthesis *)
+		v3 := 3 / 4 + 5;			(* div expression *)
+		v4 := 3 + 5.1;				(* conversion from int to real *)
+		v3 := -3 + 1;				(* unary op *)
+		v3 := +v3 -1;				(* unary op *)
+		
+		v6 := not v6;				(* unary logical op *)
+		v6 := v6 and true;			(* binary logical op *)
+		v6 := v6 or true;			(* binary logical op *)		
+		
+		v6 := 1 < 2;				(* relational binary op *)
+		v6 := 1.2 <= 2;				(* relational binary op + int to real conversion *)
+		v6 := 1 > 2;				(* relational binary op *)
+		v6 := 1 >= 2;				(* relational binary op *)
+		v6 := 1 <> 2;				(* relational binary op *)
+		v6 := 1 = 2;				(* relational binary op *)
+
+
+
+		v6 := v30 <> v40;			(* relational binary op on arrays of the same type *)
+		v6 := 1 = 2;				(* relational binary op on records of the same type *)	
+		
+		v30[0] := "test";			(* assigning to an array location *)		
+		v38.name := "john";			(* assigning to a record member *)	
+		v36 := v38.name;			(* assigning value from a record member *)
+		
+		if 1 = 2 					(* simple if-then statement *)
+			then v36 := "a"; 
+		elseif 4 = 5
+			then v36 := "a";
+		else 
+			v36 := "a"; 
+		end;				
+		
+		read(v36, v3, v8);			(* simple read statement *)
+		
+		write(2+3, "test");			(* simple write statement *)
+		
+		proc1();					(* procedure call w/no params *)
+		proc2(2, 3, "test");		(* procedure call w/params + conversion from int to real *)
+		v3 := proc4();				(* function call *)
+		
+		loop
+			v36 := "a";
+			write(v36);		
+			exit;
+		end;
+		
+		for i := 0 to 10 do 
+			v36 := "a";
+			write(v36);		
+			exit;			
+		end;			
+
+
+	
+		(* -------------------------catch exceptions in main body------------------------- *)
+	
+		return;						(* illegal return statement *)
+		
+		xyz := "no symbol";			(* undeclared symbol + as a result - wrong type *)		
+		
+		v3 := 3 + true;				(* wrong type for arithmentic op *)
+		v3 := 3 + "test";			(* wrong type for arithmentic op *)
+		v3 := 3 + v38;				(* wrong type for arithmentic op *)
+		v3 := 3 + v33;				(* wrong type for arithmentic op *)				
+		v6 := not 3;				(* wrong type for logical op *)			
+		v6 := v6 and 1;				(* wrong type for binary logical op *)				
+		v6 := v32 <> v40;			(* relational binary op on arrays of different types *)				
+		v3 := true;					(* assigning value of wrong type *)
+		
+		v30[0] := 1;				(* assigning value of a wrong type to an array location *)		
+		v38.name := 3;				(* assigning value of a wrong type to a record member *)	
+		v36 := v38.age;				(* assigning value of a wrong type from a record member *)
+		v36 := v38.x;				(* dereferencing to a wrong member + as a rsult - wrong expression type *)
+				
+		if 1 + 2 					(* wrong type in if-then statement *)
+			then v36 := "a"; 
+		end;		
+		
+		read(v6);			(* wrong type in read statement *)		
+		
+		v3 := proc1();					(* assigning void type to integer *)						
+		v6 := proc4();					(* assigning integer type to boolean *)
+		proc1(3);						(* wrong parameters *)			
+		
+		exit; 							(* test for illegal exit stm *)
+
+	end

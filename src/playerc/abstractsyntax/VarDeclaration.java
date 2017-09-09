@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
@@ -10,34 +10,30 @@ package playerc.abstractsyntax;
  * @version 3.1
  */
 public class VarDeclaration extends Declaration {
-  private Identifier id;
-  private Typename tn;
+  private IdentifierList ids;
+  private Typename typename;
   private Expression exp;
 
-  public VarDeclaration(Identifier id, Typename tn, Expression exp, int lineNumber) {
+  public VarDeclaration(IdentifierList ids, Typename typename, Expression exp, int lineNumber) {
     super(lineNumber);
-    this.id = id;
-    this.tn = tn;
+    this.ids = ids;
+    this.typename = typename;
     this.exp = exp;
-  }
-
-  public Identifier id() {
-    return id;
-  }
-
-  public Typename typename() {
-    return tn;
-  }
-
-  public Expression expression() {
-    return exp;
   }
 
   public void accept(Visitor v) {
     v.visit(this);
   }
 
-  public String toString() {
-    return "var decl";
+  public IdentifierList ids() {
+    return ids;
+  }
+
+  public Typename typename() {
+    return typename;
+  }
+
+  public Expression expression() {
+    return exp;
   }
 }

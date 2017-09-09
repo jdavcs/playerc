@@ -1,13 +1,17 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.CallExpression;
+import playerc.abstractsyntax.ExpressionList;
+import playerc.abstractsyntax.Identifier;
 
 /**
  * @author Sergey Golitsynskiy
@@ -22,15 +26,12 @@ public class MakeCallExpression extends SemanticAction {
   }
 
   public void execute(Stack semanticStack, Token lastToken) {
-    ExpressionList list = null;
+    ExpressionList params = null;
     if (semanticStack.peek() instanceof ExpressionList)
-      list = (ExpressionList) semanticStack.pop();
-
-    semanticStack.pop(); // pop marker
+      params = (ExpressionList) semanticStack.pop();
 
     Identifier id = (Identifier) semanticStack.pop();
-
-    semanticStack.push(new CallExpression(id, list, lineNumber()));
+    semanticStack.push(new CallExpression(id, params, lineNumber()));
   }
 
   public String toString() {

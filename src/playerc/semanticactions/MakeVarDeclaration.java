@@ -1,13 +1,18 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.Expression;
+import playerc.abstractsyntax.IdentifierList;
+import playerc.abstractsyntax.Typename;
+import playerc.abstractsyntax.VarDeclaration;
 
 /**
  * @author Sergey Golitsynskiy
@@ -22,12 +27,17 @@ public class MakeVarDeclaration extends SemanticAction {
   }
 
   public void execute(Stack semanticStack, Token lastToken) {
+    // var-decl -> identifier make-id identifiers-more-opt make-id-list
+    // decl-typename-opt ':=' expression ';' make-var-declaration
     Expression exp = (Expression) semanticStack.pop();
-    Typename tn = null;
+
+    Typename typename = null;
     if (semanticStack.peek() instanceof Typename)
-      tn = (Typename) semanticStack.pop();
-    Identifier id = (Identifier) semanticStack.pop();
-    semanticStack.push(new VarDeclaration(id, tn, exp, lineNumber()));
+      typename = (Typename) semanticStack.pop();
+
+    IdentifierList ids = (IdentifierList) semanticStack.pop();
+
+    semanticStack.push(new VarDeclaration(ids, typename, exp, lineNumber()));
   }
 
   public String toString() {

@@ -1,13 +1,17 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.ExpThenStatementsList;
+import playerc.abstractsyntax.IfStatement;
+import playerc.abstractsyntax.StatementList;
 
 /**
  * @author Sergey Golitsynskiy
@@ -22,13 +26,16 @@ public class MakeIfStatement extends SemanticAction {
   }
 
   public void execute(Stack semanticStack, Token lastToken) {
-    ElseFragment elseFrag = null;
-    if (semanticStack.peek() instanceof ElseFragment)
-      elseFrag = (ElseFragment) semanticStack.pop();
+    // statement -> 'if' exp-then-stms elseifs-opt make-exp-then-statements-list
+    // else-opt 'end' ';' make-if-statement
 
-    IfthenFragmentList ifthenFrags = (IfthenFragmentList) semanticStack.pop();
+    StatementList elseStms = null;
+    if (semanticStack.peek() instanceof StatementList)
+      elseStms = (StatementList) semanticStack.pop();
 
-    semanticStack.push(new IfStatement(ifthenFrags, elseFrag, lineNumber()));
+    ExpThenStatementsList expStms = (ExpThenStatementsList) semanticStack.pop();
+
+    semanticStack.push(new IfStatement(expStms, elseStms, lineNumber()));
   }
 
   public String toString() {

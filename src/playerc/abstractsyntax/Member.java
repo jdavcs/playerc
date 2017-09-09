@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
@@ -11,12 +11,15 @@ package playerc.abstractsyntax;
  */
 public class Member extends AbstractSyntaxTree {
   private Identifier id;
-  private Typename tn;
+  private Typename typename;
 
-  public Member(Identifier id, Typename tn, int lineNumber) {
+  public Member(Identifier id, Typename typename, int lineNumber) {
     super(lineNumber);
     this.id = id;
-    this.tn = tn;
+    this.typename = typename;
+  }
+
+  public void accept(Visitor v) {
   }
 
   public Identifier id() {
@@ -24,10 +27,6 @@ public class Member extends AbstractSyntaxTree {
   }
 
   public Typename typename() {
-    return tn;
-  }
-
-  public void accept(Visitor v) {
-    v.visit(this);
+    return typename;
   }
 }

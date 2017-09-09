@@ -1,13 +1,17 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.ArrayInitList;
+import playerc.abstractsyntax.ArrayInitsExpression;
+import playerc.abstractsyntax.Typename;
 
 /**
  * @author Sergey Golitsynskiy
@@ -22,11 +26,10 @@ public class MakeArrayInitsExpression extends SemanticAction {
   }
 
   public void execute(Stack semanticStack, Token lastToken) {
-    ExpressionList list = (ExpressionList) semanticStack.pop();
-    semanticStack.pop(); // pop the marker
-    Identifier id = (Identifier) semanticStack.pop();
+    ArrayInitList list = (ArrayInitList) semanticStack.pop();
+    Typename typename = (Typename) semanticStack.pop();
 
-    semanticStack.push(new ArrayInitsExpression(id, list, lineNumber()));
+    semanticStack.push(new ArrayInitsExpression(typename, list, lineNumber()));
   }
 
   public String toString() {

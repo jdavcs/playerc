@@ -1,13 +1,17 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.Identifier;
+import playerc.abstractsyntax.Member;
+import playerc.abstractsyntax.Typename;
 
 /**
  * @author Sergey Golitsynskiy
@@ -22,11 +26,9 @@ public class MakeMember extends SemanticAction {
   }
 
   public void execute(Stack semanticStack, Token lastToken) {
-    // member -> IDENTIFIER MAKE-id ':' typename ';' MAKE-member
-    Typename tn = (Typename) semanticStack.pop();
+    Typename typename = (Typename) semanticStack.pop();
     Identifier id = (Identifier) semanticStack.pop();
-
-    semanticStack.push(new Member(id, tn, lineNumber()));
+    semanticStack.push(new Member(id, typename, lineNumber()));
   }
 
   public String toString() {

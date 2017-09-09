@@ -1,0 +1,8 @@
+body -> declarations-opt 'begin' 'end' 
+
+declarations-opt -> declaration declarations-opt 
+declarations-opt -> null
+                 
+declaration -> 'var' 1 
+declaration -> 'type' 2
+declaration -> 'procedure' 3               

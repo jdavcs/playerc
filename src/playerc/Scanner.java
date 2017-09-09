@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc;
@@ -78,7 +78,7 @@ public abstract class Scanner {
   }
 
   protected void unread(char c) throws IOException {
-    source.unread(c);
+    source.unread((int) c);
   }
 
   protected abstract Token getNextToken() throws IOException, LexicalException;

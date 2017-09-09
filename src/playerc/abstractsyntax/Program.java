@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
@@ -10,30 +10,24 @@ package playerc.abstractsyntax;
  * @version 3.1
  */
 public class Program extends AbstractSyntaxTree {
-  private Identifier id;
-  private DeclarationList decls;
-  private StatementList stms;
+  private Identifier name;
+  private Body body;
 
-  public Program(Identifier id, DeclarationList decls, StatementList stms, int lineNumber) {
+  public Program(Identifier name, Body body, int lineNumber) {
     super(lineNumber);
-    this.id = id;
-    this.decls = decls;
-    this.stms = stms;
-  }
-
-  public Identifier id() {
-    return id;
-  }
-
-  public DeclarationList declarations() {
-    return decls;
-  }
-
-  public StatementList statements() {
-    return stms;
+    this.name = name;
+    this.body = body;
   }
 
   public void accept(Visitor v) {
     v.visit(this);
+  }
+
+  public Identifier name() {
+    return name;
+  }
+
+  public Body body() {
+    return body;
   }
 }

@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.test;
@@ -15,8 +15,8 @@ import playerc.Production;
  * @version 3.1
  */
 public class ProductionTest extends TestCase {
-  public void testToString() throws Exception {
-    Vector<String> rhs = new Vector<String>();
+  public void testToString() {
+    Vector rhs = new Vector();
     rhs.addElement("a");
     rhs.addElement("b");
     rhs.addElement("c");

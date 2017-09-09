@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc;
@@ -11,11 +11,6 @@ import java.io.Reader;
 /**
  * @author Sergey Golitsynskiy
  * @version 3.1
- */
-/*
- * Scanner based on FSA (see image in docs/ folder)
- * 
- * "qx" methods represent states in the FSA.
  */
 public class PlayerScanner extends Scanner {
   public static final int MAX_ID_LENGTH = 255;
@@ -29,7 +24,6 @@ public class PlayerScanner extends Scanner {
     tokenHelper = new PlayerTokens();
   }
 
-  @Override
   protected Token getNextToken() throws IOException, LexicalException {
     int nextByte = getNextByte();
     if (nextByte == -1)
@@ -120,7 +114,7 @@ public class PlayerScanner extends Scanner {
     if (isStringChar(c))
       return q4(s + c);
     else if (c == '"')
-      return new Token(PlayerTokens.StringToken, s); // drop closing quote
+      return new Token(PlayerTokens.StringToken, s); // drop the closing quote
     else
       throw new LexicalException("Illegal string character: " + c);
   }
@@ -151,7 +145,7 @@ public class PlayerScanner extends Scanner {
   private Token q9(String s) throws IOException, LexicalException {
     char c = read();
     if (c == '*')
-      return q10(""); // drop opening (*
+      return q10(""); // drop the opening (*
     else {
       unread(c);
       return new Token(PlayerTokens.LParen);

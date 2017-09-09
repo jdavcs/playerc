@@ -1,0 +1,18 @@
+A -> B
+  |  null  
+
+B -> x
+  |  y
+  |  z
+  
+C -> w
+D -> E 1
+E -> F
+F -> G
+  |  null
+G -> g 
+
+
+
+
+

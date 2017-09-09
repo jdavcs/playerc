@@ -1,17 +1,17 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * @author Sergey Golitsynskiy
- * @version 3.1
- *          object will continuosly pop the semantic stack and accum ASTs until
- *          it pops an AST of the wrong type
+ * @version 3.1 Comment: a make-list object will continuosly pop the semantic
+ *          stack and accum ASTs until it pops an AST of the wrong type
  */
 public abstract class List extends AbstractSyntaxTree {
   private Vector list;

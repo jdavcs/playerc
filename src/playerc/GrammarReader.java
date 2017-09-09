@@ -1,97 +1,81 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
- * *
+ * * Author: sergei
  * 
- * @author Sergey Golitsynskiy
- * @version 3.1 grammar file and return a collection of production objects the
- *          only requirement to the source file is to have spaces between
- *          symbols: A -> b c | c b now it's okay to have leading spaces and
- *          multiple "ORs" on the same line
- * 
- *          Grammar requirements: all terminals are lower case without any
- *          quotation marks! Non-lower case are: - nonterminals ("XYZ") -
- *          semantic actions ("MAKE-XYZ") - grammar symbols (derives, or, empty
- *          set) - identifier symbol ("IDENTIFIER") - literals
- *          ("LITERAL-STRING", "LITERAL-REAL", etc...)
+ * @version 3.1 Comment: used to read a grammar file and return a collection of
+ *          production objects Requirement: new productions must have no leading
+ *          spaces Modified: 8/11/05 added bool param to makeRHS() to exclude or
+ *          include semantic actions
  */
 public class GrammarReader {
   private String derivesSymbol;
-  private String orSymbol;
 
-  public GrammarReader(String derivesSymbol, String orSymbol) {
+  public GrammarReader(String derivesSymbol) {
     this.derivesSymbol = derivesSymbol;
-    this.orSymbol = orSymbol;
   }
 
-  public Vector getProductions(String file, boolean includeSemActions) throws IOException, Exception {
+  public Vector getProductions(String file, boolean includeSemActions) throws IOException {
+    BufferedReader reader = null;
+    try {
+      reader = new BufferedReader(new FileReader(file));
+    } catch (FileNotFoundException e) {
+      System.err.println(e.getMessage());
+    }
     Vector p = new Vector();
-    InputStream grammarIn = this.getClass().getResourceAsStream(file);
-    StringBuffer temp = new StringBuffer();
     String lhs = null;
-    int next;
     while (true) {
-      if ((next = grammarIn.read()) == -1) {
-        lhs = processLine(temp.toString(), lhs, p, includeSemActions); // process
-                                                                       // whatever
-                                                                       // is
-                                                                       // left
-                                                                       // in the
-                                                                       // buffer
+      String line = reader.readLine();
+      if (line == null)
         break;
-      }
-      char c = (char) next;
-      if (c != '\n' && c != '\r')
-        temp.append(c); // build-up line
-      else {
-        lhs = processLine(temp.toString(), lhs, p, includeSemActions);
-        temp.delete(0, temp.length());
-      }
+      if (hasLHS(line))
+        lhs = getLHS(line);
+      if (hasRHS(line))
+        p.addElement(new Production(lhs, makeRHS(line, includeSemActions)));
     }
     return p;
   }
 
-  private String processLine(String line, String lhs, Vector productions, boolean includeSemActions) throws Exception {
-    if (line != null || line.length() > 0) {
-      lhs = makeLHS(lhs, line);
-      String rhs = removeLHS(line);
-      StringTokenizer st = new StringTokenizer(rhs, orSymbol); // splits "b c |
-                                                               // c d" into "b
-                                                               // c" and "c d"
-      while (st.hasMoreTokens()) {
-        String production = st.nextToken().trim();
-        if (production.length() > 0) // leading "or" will cause an empty token -
-                                     // so must check for empty string
-          productions.addElement(new Production(lhs, makeRHS(production, includeSemActions)));
-      }
-    }
-    return lhs;
+  public boolean hasLHS(String line) {
+    return line.length() > 0 && isLetter(line.charAt(0));
   }
 
-  private String removeLHS(String s) {
-    int i = s.indexOf(derivesSymbol);
-    if (i > -1)
-      return s.substring(i + derivesSymbol.length());
+  public boolean hasRHS(String line) {
+    return line.indexOf("|") > -1 || line.indexOf(derivesSymbol) > -1;
+  }
+
+  public String getLHS(String line) {
+    int end = 0;
+    int tab = line.indexOf("\t");
+    int space = line.indexOf(" ");
+    if (space == -1)
+      end = tab;
+    else if (tab == -1)
+      end = space;
     else
-      return s;
+      end = Math.min(space, tab);
+    return line.substring(0, end);
   }
 
-  private String makeLHS(String lhs, String line) {
-    if (line.indexOf(derivesSymbol) > -1)
-      return new StringTokenizer(line).nextToken();
-    else
-      return lhs;
-  }
+  public Vector makeRHS(String line, boolean includeSemActions) {
+    // get rid of leading 'nonterminal 'derivesSymbol' or '|'
+    if (line.indexOf("|") > -1)
+      line = line.substring(line.indexOf("|") + 1);
+    else if (line.indexOf(derivesSymbol) > -1)
+      line = line.substring(line.indexOf(derivesSymbol) + derivesSymbol.length());
 
-  private Vector makeRHS(String line, boolean includeSemActions) {
     Vector rhs = new Vector();
     StringTokenizer st = new StringTokenizer(line);
     while (st.hasMoreTokens()) {
@@ -102,19 +86,7 @@ public class GrammarReader {
     return rhs;
   }
 
-//  // alternative implementation: uses a filereader; in this case, include the
-//  // package name in the path
-//  public Vector getProductionsFromFile(String file, boolean includeSemActions) throws IOException, Exception { 
-//    Vector p = new Vector(); 
-//    BufferedReader reader = null; 
-//    try { reader = new
-//   BufferedReader(new FileReader(file)); String lhs = null; String rhs = null;
-//   while(true) { String line = reader.readLine(); if (line == null) break; if
-//   (line.length() > 0) { lhs = makeLHS(lhs, line); rhs = removeLHS(line);
-//   StringTokenizer st = new StringTokenizer(rhs, orSymbol); //splits
-//   "b c | c d" into "b c" and "c d" while (st.hasMoreTokens()) { String token
-//   = st.nextToken().trim(); if (token.length() > 0) //leading "or" will cause
-//   an empty token p.addElement(new Production(lhs, makeRHS(token,
-//   includeSemActions))); } } } } catch (FileNotFoundException e) {
-//   System.err.println(e.getMessage()); } return p; }
+  private boolean isLetter(char c) {
+    return ((65 <= c) && (c <= 90)) || ((97 <= c) && (c <= 122));
+  }
 }

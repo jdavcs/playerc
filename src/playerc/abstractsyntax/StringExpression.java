@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
@@ -10,11 +10,11 @@ package playerc.abstractsyntax;
  * @version 3.1
  */
 public class StringExpression extends Expression {
-  private String value;
+  String value;
 
-  public StringExpression(String value, int lineNumber) {
+  public StringExpression(String s, int lineNumber) {
     super(lineNumber);
-    this.value = value;
+    value = s;
   }
 
   public String value() {

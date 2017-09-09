@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
@@ -12,13 +12,13 @@ package playerc.abstractsyntax;
 public interface Visitor {
   public void visit(Program x);
 
+  public void visit(Body x);
+
   public void visit(VarDeclaration x);
 
-  public void visit(ArrayTypeDeclaration x);
+  public void visit(ProcDeclaration x);
 
-  public void visit(ProcedureDeclaration x);
-
-  public void visit(RecordTypeDeclaration x);
+  public void visit(TypeDeclaration x);
 
   public void visit(PositiveExpression x);
 
@@ -60,15 +60,11 @@ public interface Visitor {
 
   public void visit(StringExpression x);
 
-  public void visit(NullExpression x);
-
   public void visit(ArrayInitsExpression x);
 
   public void visit(RecordInitsExpression x);
 
   public void visit(CallExpression x);
-
-  public void visit(ParenExpression x);
 
   public void visit(LookupExpression x);
 
@@ -100,17 +96,17 @@ public interface Visitor {
 
   public void visit(StatementList x);
 
-  public void visit(FPSectionList x);
+  public void visit(FpSectionList x);
 
-  public void visit(IfthenFragmentList x);
+  public void visit(IdentifierList x);
 
   public void visit(LvalueList x);
 
-  public void visit(RecordInitList x);
+  public void visit(RecordType x);
 
   public void visit(NewTypename x);
 
-  public void visit(PrimitiveTypename x);
+  public void visit(PrimTypename x);
 
   public void visit(IdLvalue x);
 
@@ -118,21 +114,9 @@ public interface Visitor {
 
   public void visit(DerefLvalue x);
 
-  public void visit(Identifier x);
+  public void visit(FpSection x);
 
-  public void visit(Operator x);
+  public void visit(ParenExpression x);
 
-  public void visit(ElseFragment x);
-
-  public void visit(IfthenFragment x);
-
-  public void visit(RecordInit x);
-
-  public void visit(FormalParams x);
-
-  public void visit(FPSection x);
-
-  public void visit(Member x);
-
-  public void visit(MemberList x);
+  public void visit(NullExpression x);
 }

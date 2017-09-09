@@ -1,13 +1,15 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.Operator;
 
 /**
  * @author Sergey Golitsynskiy
@@ -22,7 +24,7 @@ public class MakeOperator extends SemanticAction {
   }
 
   public void execute(Stack semanticStack, Token lastToken) {
-    semanticStack.push(new Operator(lastToken.type(), lineNumber()));
+    semanticStack.push(new Operator(lastToken, lineNumber()));
   }
 
   public String toString() {

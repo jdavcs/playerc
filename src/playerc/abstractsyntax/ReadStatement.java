@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
@@ -10,18 +10,18 @@ package playerc.abstractsyntax;
  * @version 3.1
  */
 public class ReadStatement extends Statement {
-  private LvalueList lvals;
+  private LvalueList list;
 
-  public ReadStatement(LvalueList lvals, int lineNumber) {
+  public ReadStatement(LvalueList list, int lineNumber) {
     super(lineNumber);
-    this.lvals = lvals;
-  }
-
-  public LvalueList lvalues() {
-    return lvals;
+    this.list = list;
   }
 
   public void accept(Visitor v) {
     v.visit(this);
+  }
+
+  public LvalueList lvalueList() {
+    return list;
   }
 }

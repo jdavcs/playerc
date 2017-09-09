@@ -1,13 +1,17 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.DerefLvalue;
+import playerc.abstractsyntax.Identifier;
+import playerc.abstractsyntax.Lvalue;
 
 /**
  * @author Sergey Golitsynskiy
@@ -23,9 +27,8 @@ public class MakeDerefLvalue extends SemanticAction {
 
   public void execute(Stack semanticStack, Token lastToken) {
     Identifier id = (Identifier) semanticStack.pop();
-    Lvalue lval = (Lvalue) semanticStack.pop();
-
-    semanticStack.push(new DerefLvalue(lval, id, lineNumber()));
+    Lvalue lvalue = (Lvalue) semanticStack.pop();
+    semanticStack.push(new DerefLvalue(lvalue, id, lineNumber()));
   }
 
   public String toString() {

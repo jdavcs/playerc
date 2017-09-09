@@ -1,13 +1,17 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.NewTypename;
+import playerc.abstractsyntax.RecordInitList;
+import playerc.abstractsyntax.RecordInitsExpression;
 
 /**
  * @author Sergey Golitsynskiy
@@ -23,10 +27,9 @@ public class MakeRecordInitsExpression extends SemanticAction {
 
   public void execute(Stack semanticStack, Token lastToken) {
     RecordInitList list = (RecordInitList) semanticStack.pop();
-    semanticStack.pop(); // pop marker
-    Identifier id = (Identifier) semanticStack.pop();
+    NewTypename typename = (NewTypename) semanticStack.pop();
 
-    semanticStack.push(new RecordInitsExpression(id, list, lineNumber()));
+    semanticStack.push(new RecordInitsExpression(typename, list, lineNumber()));
   }
 
   public String toString() {

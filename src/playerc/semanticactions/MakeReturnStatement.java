@@ -1,13 +1,17 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.Expression;
+import playerc.abstractsyntax.ReturnMarker;
+import playerc.abstractsyntax.ReturnStatement;
 
 /**
  * @author Sergey Golitsynskiy
@@ -22,13 +26,14 @@ public class MakeReturnStatement extends SemanticAction {
   }
 
   public void execute(Stack semanticStack, Token lastToken) {
-    Expression exp = null;
-    if (semanticStack.peek() instanceof Expression)
-      exp = (Expression) semanticStack.pop();
+    // at the top of the stack it's either the marker or the expression
+    Expression e = null;
+    if (!(semanticStack.peek() instanceof ReturnMarker))
+      e = (Expression) semanticStack.pop();
 
-    semanticStack.pop(); // pop marker
+    semanticStack.pop(); // pop the return-marker
 
-    semanticStack.push(new ReturnStatement(exp, lineNumber()));
+    semanticStack.push(new ReturnStatement(e, lineNumber()));
   }
 
   public String toString() {

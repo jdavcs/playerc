@@ -1,0 +1,14 @@
+program         -> declarations statements
+declarations    -> declaration declarations
+                |  Ø
+declaration     -> floatdecl identifier
+                |  intdecl identifier
+statements      -> statement statements
+                |  Ø
+statement       -> identifier assign value expressionTail
+                |  print identifier
+expressionTail  -> plus value expressionTail
+                |  minus value expressionTail
+                |  Ø
+value           -> identifier
+                |  number

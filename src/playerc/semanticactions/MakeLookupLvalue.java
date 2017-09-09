@@ -1,13 +1,17 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.Expression;
+import playerc.abstractsyntax.LookupLvalue;
+import playerc.abstractsyntax.Lvalue;
 
 /**
  * @author Sergey Golitsynskiy
@@ -23,9 +27,8 @@ public class MakeLookupLvalue extends SemanticAction {
 
   public void execute(Stack semanticStack, Token lastToken) {
     Expression exp = (Expression) semanticStack.pop();
-    Lvalue lval = (Lvalue) semanticStack.pop();
-
-    semanticStack.push(new LookupLvalue(lval, exp, lineNumber()));
+    Lvalue lvalue = (Lvalue) semanticStack.pop();
+    semanticStack.push(new LookupLvalue(lvalue, exp, lineNumber()));
   }
 
   public String toString() {

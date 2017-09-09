@@ -1,13 +1,14 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc;
 
-import java.io.*;
-
-import playerc.abstractsyntax.Program;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 /**
  * @author Sergey Golitsynskiy
@@ -33,8 +34,9 @@ public class playerc {
       e.printStackTrace();
     }
 
-    Grammar gP = new Grammar("playerGrammar.txt", "?", "->", "|");
-    TableDrivenParser parser = new TableDrivenParser(source, gP, new PlayerTokens());
+    // Grammar gP = new Grammar("playerGrammar.txt", "?", "->", "|");
+    // TableDrivenParser parser = new TableDrivenParser(source, gP, new
+    // PlayerTokens());
 
     // Program program = (Program)parser.parse();
     //

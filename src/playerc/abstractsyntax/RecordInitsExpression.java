@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
@@ -10,24 +10,24 @@ package playerc.abstractsyntax;
  * @version 3.1
  */
 public class RecordInitsExpression extends Expression {
-  private Identifier id;
-  private RecordInitList inits;
+  private NewTypename typename;
+  private RecordInitList list;
 
-  public RecordInitsExpression(Identifier id, RecordInitList inits, int lineNumber) {
+  public RecordInitsExpression(NewTypename typename, RecordInitList list, int lineNumber) {
     super(lineNumber);
-    this.id = id;
-    this.inits = inits;
-  }
-
-  public Identifier id() {
-    return id;
-  }
-
-  public RecordInitList recordInits() {
-    return inits;
+    this.typename = typename;
+    this.list = list;
   }
 
   public void accept(Visitor v) {
     v.visit(this);
+  }
+
+  public NewTypename typename() {
+    return typename;
+  }
+
+  public RecordInitList list() {
+    return list;
   }
 }

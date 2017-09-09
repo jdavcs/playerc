@@ -1,0 +1,9 @@
+statement   := declare identifier option-list
+option-list := option option-list
+            | ø
+option      := scale 
+			| precision
+scale       := fixed 
+			| float
+precision   := single 
+			| double

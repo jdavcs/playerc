@@ -1,13 +1,17 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.Body;
+import playerc.abstractsyntax.Identifier;
+import playerc.abstractsyntax.Program;
 
 /**
  * @author Sergey Golitsynskiy
@@ -22,11 +26,9 @@ public class MakeProgram extends SemanticAction {
   }
 
   public void execute(Stack semanticStack, Token lastToken) {
-    StatementList statements = (StatementList) semanticStack.pop();
-    DeclarationList declarations = (DeclarationList) semanticStack.pop();
+    Body body = (Body) semanticStack.pop();
     Identifier id = (Identifier) semanticStack.pop();
-
-    semanticStack.push(new Program(id, declarations, statements, lineNumber()));
+    semanticStack.push(new Program(id, body, lineNumber()));
   }
 
   public String toString() {

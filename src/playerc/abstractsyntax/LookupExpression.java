@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
@@ -19,15 +19,15 @@ public class LookupExpression extends Expression {
     this.exp = exp;
   }
 
+  public void accept(Visitor v) {
+    v.visit(this);
+  }
+
   public Lvalue lvalue() {
     return lvalue;
   }
 
   public Expression expression() {
     return exp;
-  }
-
-  public void accept(Visitor v) {
-    v.visit(this);
   }
 }

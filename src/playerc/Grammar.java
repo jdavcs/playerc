@@ -1,102 +1,56 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * @author Sergey Golitsynskiy
- * @version 3.1 start with the start symbol production. "derives", "or", and
- *          "null" symbols are passed to the constructor.
+ * @version 3.1 Comment: grammar MUST start with the start symbol production.
+ *          'or' symbol must be '|', derives and null symbols are passed to the
+ *          constructor.
  */
 public class Grammar {
   public static final String END_MARKER = "$";
 
   public static boolean IsSemanticAction(String s) {
-    return s.startsWith("MAKE-");
+    return s.startsWith("make-");
   }
 
   private final String FIRST_NAME = "FIRST";
   private final String FOLLOWS_NAME = "FOLLOWS";
 
   private String nullSymbol;
-  private Vector productions; // WITHOUT semantic actions
-  private Vector semProductions; // WITH semantic actions
+  private Vector productions;
+  private Vector semProductions; // includes semantic actions
   private HashMap firsts;
   private HashMap follows;
-  public Vector terminals;
+  private Vector terminals;
   private Vector nonterminals;
 
-  public Grammar(String file, String nullSymbol, String derivesSymbol, String orSymbol) {
+  public Grammar(String file, String nullSymbol, String derivesSymbol) {
     this.nullSymbol = nullSymbol;
-    
-    GrammarReader r = new GrammarReader(derivesSymbol, orSymbol);
+    GrammarReader r = new GrammarReader(derivesSymbol);
     try {
       productions = r.getProductions(file, false);
       semProductions = r.getProductions(file, true);
-      initData();
     } catch (IOException e) {
       e.printStackTrace();
-    } catch (Exception e) {
-      e.printStackTrace();
     }
-  }
-
-  public String toString() {
-    StringBuffer buffer = new StringBuffer();
-    for (int i = 0; i < productions.size(); i++)
-      buffer.append(((Production) productions.elementAt(i)).toString());
-    return buffer.toString();
-  }
-
-  public String toStringWithSemActions() {
-    StringBuffer buffer = new StringBuffer();
-    for (int i = 0; i < semProductions.size(); i++)
-      buffer.append(((Production) semProductions.elementAt(i)).toString());
-    return buffer.toString();
-  }
-
-  public String firstsToString() {
-    return mapToString(firsts, FIRST_NAME);
-  }
-
-  public String followsToString() {
-    return mapToString(follows, FOLLOWS_NAME);
+    initData();
   }
 
   public String getStartSymbol() {
     return ((Production) productions.elementAt(0)).lhs();
   }
 
-  public boolean isTerminal(String s) {
-    return terminals.contains(s);
-  }
-
-  public boolean isNonterminal(String s) {
-    return nonterminals.contains(s);
-  }
-
-  public int numberOfTerminals() {
-    return terminals.size();
-  }
-
-  public int numberOfNonterminals() {
-    return nonterminals.size();
-  }
-
-  public Vector terminals() {
-    return terminals;
-  } // for testing only
-
-  public Vector nonterminals() {
-    return nonterminals;
-  } // for testing only
-
-  /*----------------------protected methods-------------------------------*/
   public ParsingTable getParsingTable() {
     ParsingTable table = new ParsingTable(terminals, nonterminals);
     for (int i = 0; i < productions.size(); i++) {
@@ -146,6 +100,49 @@ public class Grammar {
     return table;
   }
 
+  private ParseAction makeParseAction(String symbol) {
+    if (symbol.compareTo(nullSymbol) == 0)
+      return new PushNothing();
+    else
+      return new PushSymbol(symbol);
+  }
+
+  public String toString() {
+    StringBuffer buffer = new StringBuffer();
+    for (int i = 0; i < productions.size(); i++)
+      buffer.append(((Production) productions.elementAt(i)).toString());
+    return buffer.toString();
+  }
+
+  public String toStringWithSemActions() {
+    StringBuffer buffer = new StringBuffer();
+    for (int i = 0; i < semProductions.size(); i++)
+      buffer.append(((Production) semProductions.elementAt(i)).toString());
+    return buffer.toString();
+  }
+
+  public String firstsToString() {
+    return mapToString(firsts, FIRST_NAME);
+  }
+
+  public String followsToString() {
+    return mapToString(follows, FOLLOWS_NAME);
+  }
+
+  private String mapToString(HashMap map, String name) {
+    StringBuffer buffer = new StringBuffer();
+    Iterator i = map.keySet().iterator();
+    while (i.hasNext()) {
+      String symbol = (String) i.next();
+      buffer.append(name + "(" + symbol + ") = { ");
+      Iterator j = ((HashSet) map.get(symbol)).iterator();
+      while (j.hasNext())
+        buffer.append(j.next() + " ");
+      buffer.append("}\n");
+    }
+    return buffer.toString();
+  }
+
   protected HashMap firsts() {
     return firsts;
   }
@@ -154,12 +151,44 @@ public class Grammar {
     return follows;
   }
 
-  /*----------------------private methods-------------------------------*/
+  public boolean isTerminal(String s) {
+    return terminals.contains(s);
+  }
+
+  public boolean isNonterminal(String s) {
+    return nonterminals.contains(s);
+  }
+
+  public boolean isNullSymbol(String s) {
+    return s.compareTo(nullSymbol) == 0;
+  }
+
+  public Vector terminals() {
+    return terminals;
+  }
+
+  public Vector nonterminals() {
+    return nonterminals;
+  }
+
+  public HashSet getProductions(String nonterminal) {
+    HashSet set = new HashSet();
+    for (int i = 0; i < productions.size(); i++) {
+      Production p = (Production) productions.elementAt(i);
+      if (p.lhs().compareTo(nonterminal) == 0)
+        set.add(p);
+    }
+    return set;
+  }
+
+  public boolean derivesNull(String nonterminal) {
+    HashSet symbols = getFirstSet(nonterminal);
+    return symbols.contains(nullSymbol);
+  }
 
   private void initData() {
-
     initNonterminals();
-    initTerminals(); // must be called after initNonterminals()
+    initTerminals();
     initFirsts();
     initFollows();
   }
@@ -205,7 +234,7 @@ public class Grammar {
     }
   }
 
-  private HashSet getFirstSet(String nonterminal) {
+  public HashSet getFirstSet(String nonterminal) {
     if (firsts.containsKey(nonterminal))
       return (HashSet) firsts.get(nonterminal);
 
@@ -257,7 +286,7 @@ public class Grammar {
     execFollowsRule3();
   }
 
-  private HashSet getFollowsSet(String nonterminal) {
+  public HashSet getFollowsSet(String nonterminal) {
     return (HashSet) follows.get(nonterminal);
   }
 
@@ -326,43 +355,6 @@ public class Grammar {
     }
   }
 
-  private String mapToString(HashMap map, String name) {
-    StringBuffer buffer = new StringBuffer();
-    Iterator i = map.keySet().iterator();
-    while (i.hasNext()) {
-      String symbol = (String) i.next();
-      buffer.append(name + "(" + symbol + ") = { ");
-      Iterator j = ((HashSet) map.get(symbol)).iterator();
-      while (j.hasNext())
-        buffer.append(j.next() + " ");
-      buffer.append("}\n");
-    }
-    return buffer.toString();
-  }
-
-  private ParseAction makeParseAction(String symbol) {
-    if (symbol.compareTo(nullSymbol) == 0)
-      return new PushNothing();
-    else
-      return new PushSymbol(symbol);
-  }
-
-  private HashSet getProductions(String nonterminal) {
-    HashSet set = new HashSet();
-    for (int i = 0; i < productions.size(); i++) {
-      Production p = (Production) productions.elementAt(i);
-      if (p.lhs().compareTo(nonterminal) == 0)
-        set.add(p);
-    }
-    return set;
-  }
-
-  public boolean derivesNull(String nonterminal) {
-    HashSet symbols = getFirstSet(nonterminal);
-    return symbols.contains(nullSymbol);
-  }
-
-  // for testing only
   public String getSemanticActions() {
     HashSet actions = new HashSet();
     for (int i = 0; i < semProductions.size(); i++) {

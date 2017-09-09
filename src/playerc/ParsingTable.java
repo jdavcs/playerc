@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc;
@@ -9,7 +9,8 @@ import java.util.Vector;
 
 /**
  * @author Sergey Golitsynskiy
- * @version 3.1 (terminals/nonterminals/sem actions) are implemented as strings
+ * @version 3.1 Comment: all symbols (terminals/nonterminals/sem actions) are
+ *          implemented as strings
  */
 public class ParsingTable {
   private ParseAction[][] table;

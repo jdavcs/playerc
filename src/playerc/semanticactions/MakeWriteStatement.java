@@ -1,13 +1,16 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.ExpressionList;
+import playerc.abstractsyntax.WriteStatement;
 
 /**
  * @author Sergey Golitsynskiy
@@ -22,10 +25,12 @@ public class MakeWriteStatement extends SemanticAction {
   }
 
   public void execute(Stack semanticStack, Token lastToken) {
-    ExpressionList list = (ExpressionList) semanticStack.pop();
-    semanticStack.pop(); // pop marker
+    // statement -> 'write' make-write-marker write-params ';'
+    // make-write-statement
+    ExpressionList expressions = (ExpressionList) semanticStack.pop();
+    semanticStack.pop(); // pop the write-marker
 
-    semanticStack.push(new WriteStatement(list, lineNumber()));
+    semanticStack.push(new WriteStatement(expressions, lineNumber()));
   }
 
   public String toString() {

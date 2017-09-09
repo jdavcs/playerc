@@ -1,13 +1,16 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.LvalueList;
+import playerc.abstractsyntax.ReadStatement;
 
 /**
  * @author Sergey Golitsynskiy
@@ -22,9 +25,9 @@ public class MakeReadStatement extends SemanticAction {
   }
 
   public void execute(Stack semanticStack, Token lastToken) {
-    LvalueList list = (LvalueList) semanticStack.pop();
-    semanticStack.pop(); // pop marker
 
+    LvalueList list = (LvalueList) semanticStack.pop();
+    semanticStack.pop(); // pop the read-marker
     semanticStack.push(new ReadStatement(list, lineNumber()));
   }
 

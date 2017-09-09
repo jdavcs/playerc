@@ -1,13 +1,20 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.semanticactions;
 
 import java.util.Stack;
-import playerc.*;
-import playerc.abstractsyntax.*;
+
+import playerc.PlayerTokens;
+import playerc.SemanticAction;
+import playerc.Token;
+import playerc.abstractsyntax.Expression;
+import playerc.abstractsyntax.NegativeExpression;
+import playerc.abstractsyntax.NotExpression;
+import playerc.abstractsyntax.Operator;
+import playerc.abstractsyntax.PositiveExpression;
 
 /**
  * @author Sergey Golitsynskiy
@@ -25,11 +32,11 @@ public class MakeUnaryOpExpression extends SemanticAction {
     Expression e = (Expression) semanticStack.pop();
     Operator op = (Operator) semanticStack.pop();
 
-    if (op.type() == PlayerTokens.MinusOp)
+    if (op.operatorToken().type() == PlayerTokens.MinusOp)
       semanticStack.push(new NegativeExpression(e, lineNumber()));
-    else if (op.type() == PlayerTokens.PlusOp)
+    else if (op.operatorToken().type() == PlayerTokens.PlusOp)
       semanticStack.push(new PositiveExpression(e, lineNumber()));
-    else if (op.type() == PlayerTokens.KeyNot)
+    else if (op.operatorToken().type() == PlayerTokens.KeyNot)
       semanticStack.push(new NotExpression(e, lineNumber()));
   }
 

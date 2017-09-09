@@ -1,26 +1,20 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * @author Sergey Golitsynskiy
- * @version 3.1
- */
-
-/*
- * Comment: list MUST be 0-based and sequential: after adding all token names to
- * a vector, their indexes will be interpreted as their token types.
+ * @version 3.1 Comment: token type list MUST be 0-based and be sequential:
+ *          after adding all token names to a vector, their indexes will be
+ *          interpreted as their token types.
  * 
- * Aug 18 - Added keyword 'string' and token type KeyString = 29
- * 
- * DO NOT remove single quotes from keywords - there are keywords which have the
- * same spelling as nonterminals, so the single quotes distinguish terminals
- * from nonterminals and other elements of the grammar!
+ *          Aug 18 - Added keyword 'string' and token type KeyString = 29
  */
 public class PlayerTokens {
   // value token types
@@ -55,7 +49,8 @@ public class PlayerTokens {
   public static final int KeyReal = 26;
   public static final int KeyRecord = 27;
   public static final int KeyReturn = 28;
-  public static final int KeyString = 29;
+  public static final int KeyString = 29; // added; otherwize can't declare a
+                                          // string variable!
   public static final int KeyThen = 30;
   public static final int KeyTo = 31;
   public static final int KeyTrue = 32;
@@ -89,12 +84,9 @@ public class PlayerTokens {
   public static final int RArrBracket = 58;
   public static final int EOFsymbol = 59;
 
-  private Vector<String> tokenNames; // names of built-in tokens
-  /*
-   * predefined keywords user-defined identifiers (for scanner) (Token objects
-   * stored by token names)
-   */
-  private HashMap<String, Token> wordTokens;
+  private Vector tokenNames;
+  private HashMap wordTokens; // predefined(keywords) +
+                              // user-defined(identifiers) symbols (for scanner)
 
   public PlayerTokens() {
     initTokenNames();
@@ -121,76 +113,82 @@ public class PlayerTokens {
     return (String) tokenNames.elementAt(type);
   }
 
-  private void initWordTokens() // load all keywords into symbol table
+  private void initWordTokens() // load all keywords
   {
-    wordTokens = new HashMap<String, Token>();
-    for (int i = KeyAnd; i <= KeyWrite; i++)
-      wordTokens.put(getTokenName(i), new Token(i));
+    wordTokens = new HashMap();
+    for (int i = KeyAnd; i <= KeyWrite; i++) {
+      String symbol = trim(getTokenName(i));
+      wordTokens.put(symbol, new Token(i));
+    }
   }
 
-  private void initTokenNames() // loads predefined keywords, symbols and
-                                // punctuation
-  {
-    tokenNames = new Vector<String>();
-    tokenNames.addElement("LITERAL-INTEGER");
-    tokenNames.addElement("LITERAL-REAL");
-    tokenNames.addElement("LITERAL-STRING");
-    tokenNames.addElement("IDENTIFIER");
-    tokenNames.addElement("and");
-    tokenNames.addElement("array");
-    tokenNames.addElement("begin");
-    tokenNames.addElement("boolean");
-    tokenNames.addElement("by");
-    tokenNames.addElement("do");
-    tokenNames.addElement("else");
-    tokenNames.addElement("elseif");
-    tokenNames.addElement("end");
-    tokenNames.addElement("exit");
-    tokenNames.addElement("false");
-    tokenNames.addElement("for");
-    tokenNames.addElement("if");
+  private void initTokenNames() {
+    tokenNames = new Vector();
     tokenNames.addElement("integer");
-    tokenNames.addElement("loop");
-    tokenNames.addElement("not");
-    tokenNames.addElement("null");
-    tokenNames.addElement("of");
-    tokenNames.addElement("or");
-    tokenNames.addElement("procedure");
-    tokenNames.addElement("program");
-    tokenNames.addElement("read");
     tokenNames.addElement("real");
-    tokenNames.addElement("record");
-    tokenNames.addElement("return");
     tokenNames.addElement("string");
-    tokenNames.addElement("then");
-    tokenNames.addElement("to");
-    tokenNames.addElement("true");
-    tokenNames.addElement("type");
-    tokenNames.addElement("var");
-    tokenNames.addElement("write");
-    tokenNames.addElement(":=");
-    tokenNames.addElement("+");
-    tokenNames.addElement("-");
-    tokenNames.addElement("*");
-    tokenNames.addElement("/");
-    tokenNames.addElement("<");
-    tokenNames.addElement("<=");
-    tokenNames.addElement(">");
-    tokenNames.addElement(">=");
-    tokenNames.addElement("=");
-    tokenNames.addElement("<>");
-    tokenNames.addElement(":");
-    tokenNames.addElement(";");
-    tokenNames.addElement(",");
-    tokenNames.addElement(".");
-    tokenNames.addElement("(");
-    tokenNames.addElement(")");
-    tokenNames.addElement("[");
-    tokenNames.addElement("]");
-    tokenNames.addElement("{");
-    tokenNames.addElement("}");
-    tokenNames.addElement("[<");
-    tokenNames.addElement(">]");
+    tokenNames.addElement("identifier");
+    tokenNames.addElement("'and'");
+    tokenNames.addElement("'array'");
+    tokenNames.addElement("'begin'");
+    tokenNames.addElement("'boolean'");
+    tokenNames.addElement("'by'");
+    tokenNames.addElement("'do'");
+    tokenNames.addElement("'else'");
+    tokenNames.addElement("'elseif'");
+    tokenNames.addElement("'end'");
+    tokenNames.addElement("'exit'");
+    tokenNames.addElement("'false'");
+    tokenNames.addElement("'for'");
+    tokenNames.addElement("'if'");
+    tokenNames.addElement("'integer'");
+    tokenNames.addElement("'loop'");
+    tokenNames.addElement("'not'");
+    tokenNames.addElement("'null'");
+    tokenNames.addElement("'of'");
+    tokenNames.addElement("'or'");
+    tokenNames.addElement("'procedure'");
+    tokenNames.addElement("'program'");
+    tokenNames.addElement("'read'");
+    tokenNames.addElement("'real'");
+    tokenNames.addElement("'record'");
+    tokenNames.addElement("'return'");
+    tokenNames.addElement("'string'"); // added; otherwize can't declare a
+                                       // string variable!
+    tokenNames.addElement("'then'");
+    tokenNames.addElement("'to'");
+    tokenNames.addElement("'true'");
+    tokenNames.addElement("'type'");
+    tokenNames.addElement("'var'");
+    tokenNames.addElement("'write'");
+    tokenNames.addElement("':='");
+    tokenNames.addElement("'+'");
+    tokenNames.addElement("'-'");
+    tokenNames.addElement("'*'");
+    tokenNames.addElement("'/'");
+    tokenNames.addElement("'<'");
+    tokenNames.addElement("'<='");
+    tokenNames.addElement("'>'");
+    tokenNames.addElement("'>='");
+    tokenNames.addElement("'='");
+    tokenNames.addElement("'<>'");
+    tokenNames.addElement("':'");
+    tokenNames.addElement("';'");
+    tokenNames.addElement("','");
+    tokenNames.addElement("'.'");
+    tokenNames.addElement("'('");
+    tokenNames.addElement("')'");
+    tokenNames.addElement("'['");
+    tokenNames.addElement("']'");
+    tokenNames.addElement("'{'");
+    tokenNames.addElement("'}'");
+    tokenNames.addElement("'[<'");
+    tokenNames.addElement("'>]'");
     tokenNames.addElement(Grammar.END_MARKER);
+  }
+
+  // removes single quotes around symbol
+  private String trim(String s) {
+    return s.substring(1, s.length() - 1);
   }
 }

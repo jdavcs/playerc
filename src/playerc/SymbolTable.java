@@ -1,109 +1,105 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc;
 
-import java.util.*;
+import java.util.Stack;
 
 /**
  * @author Sergey Golitsynskiy
  * @version 3.1
  */
 public class SymbolTable {
-  private final String scopeMarker = "";
   private final int SIZE = 256;
-  private Stack scopeStack;
-  private Bucket[] table;
+  private final String scopeMarker = "";
+  private Bucket table[];
+  private Stack undoStack;
 
   public SymbolTable() {
-    scopeStack = new Stack();
     table = new Bucket[SIZE];
+    undoStack = new Stack();
     setScope();
   }
 
   public void setScope() {
-    scopeStack.push(scopeMarker);
+    undoStack.push(scopeMarker);
   }
 
   public void removeScope() {
     while (true) {
-      String s = (String) scopeStack.pop();
+      String s = (String) undoStack.pop();
       if (s.equals(scopeMarker))
         break;
-      else {
-        Bucket b = findBucket(s);
-        Bucket parent = b.scopeParent;
-
-        if (parent != null)
-          parent.scopeChild = null;
-        else // remove bucket alltogether: there's no additional scope here
-        {
-          Bucket hashParent = b.hashParent;
-          Bucket hashChild = b.hashChild;
-          if (hashParent != null)
-            hashParent.hashChild = hashChild;
-          else
-            table[hash(s)] = hashChild;
-        }
-      }
+      else
+        pop(s);
     }
   }
 
-  public void insert(String s, DataType type, int line) throws SemanticException {
-    checkNotInScope(s, line);
+  public void insert(String s, TypeExpression t, int line) throws SemanticException {
+    checkNotExistsInScope(s, line);
+    int i = hash(s);
+    table[i] = new Bucket(s, t, table[i]);
+    undoStack.push(s);
+  }
 
-    Bucket b = findBucket(s);
-    if (b != null) // found bucket containing same symbol -> add scope link
-    {
-      Bucket temp = new Bucket(s, type, b.hashParent, b.hashChild, b, null);
-      b.scopeChild = temp;
-    } else {
-      int i = hash(s);
-      if (table[i] == null) // bucket is empty -> create new bucket for symbol
-        table[i] = new Bucket(s, type, null, null, null, null);
-      else // bucket contains other symbol -> add hash link (we KNOW that this
-           // symbol has not been added yet - so it's not hidden by first link)
-        table[i] = new Bucket(s, type, table[i].hashParent, table[i], null, null);
+  public void update(String s, TypeExpression t, int line) throws SemanticException {
+    // find within this scope and change TypeExpression
+    checkExistsInScope(s, line);
+    int i = hash(s);
+    table[i] = new Bucket(s, t, table[i]);
+    undoStack.push(s);
+  }
+
+  public TypeExpression lookup(String s, int line) throws SemanticException {
+
+    int i = hash(s);
+    for (Bucket b = table[i]; b != null; b = b.next)
+      if (s.equals(b.key))
+        return b.type;
+
+    throw new SemanticException("symbol " + s + " not found", line);
+  }
+
+  public void pop(String s) {
+    int i = hash(s);
+    table[i] = table[i].next;
+  }
+
+  public String toString() {
+    StringBuffer buffer = new StringBuffer();
+    for (int i = 0; i < SIZE; i++) {
+      if (table[i] != null)
+        for (Bucket b = table[i]; b != null; b = b.next)
+          buffer.append(b.key + " == " + b.type.typename().toString() + "\n");
     }
-
-    scopeStack.push(s);
+    return buffer.toString();
   }
 
-  public DataType lookup(String s, int line) throws SemanticException {
-    Bucket b = findBucket(s);
-    if (b == null)
-      throw new SemanticException("SymbolTable lookup error: symbol " + s + " not found", line);
-    return b.type;
-  }
-
-  public void update(String s, DataType type, int line) throws SemanticException {
-    checkInScope(s, line);
-    Bucket b = findBucket(s);
-    b.type = type;
-  }
-
-  private void checkNotInScope(String s, int line) throws SemanticException {
-    for (int i = scopeStack.size() - 1; i > -1; i--) {
-      String test = (String) scopeStack.elementAt(i);
+  private void checkNotExistsInScope(String s, int line) throws SemanticException {
+    int pos = undoStack.size() - 1;
+    while (pos > -1) {
+      String test = (String) undoStack.elementAt(pos);
       if (test.equals(scopeMarker))
-        return;
+        break;
       else if (test.compareTo(s) == 0)
-        throw new SemanticException("SymbolTable insert error: symbol " + s + " is declared within the current scope",
-            line);
+        throw new SemanticException("symbol " + s + " is already declared within the current scope", line);
+      pos--;
     }
   }
 
-  private void checkInScope(String s, int line) throws SemanticException {
-    for (int i = scopeStack.size() - 1; i > -1; i--) {
-      String test = (String) scopeStack.elementAt(i);
+  private void checkExistsInScope(String s, int line) throws SemanticException {
+    int pos = undoStack.size() - 1;
+    while (pos > -1) {
+      String test = (String) undoStack.elementAt(pos);
       if (test.compareTo(s) == 0)
         return;
       if (test.equals(scopeMarker))
-        throw new SemanticException(
-            "SymbolTable update error: symbol " + s + " is not declared within the current scope", line);
+        break;
+      pos--;
     }
+    throw new SemanticException("symbol " + s + " is already declared within the current scope", line);
   }
 
   private int hash(String s) {
@@ -113,51 +109,15 @@ public class SymbolTable {
     return Math.abs(h % SIZE);
   }
 
-  private Bucket findBucket(String s) {
-    int i = hash(s);
-    Bucket b = table[i];
-    while (b != null)
-      if (b.key == s) {
-        while (b.scopeChild != null) // find the latest scopelink!
-          b = b.scopeChild;
-        return b;
-      } else
-        b = b.hashChild;
-    return null;
-  }
-
-  public String toString() {
-    StringBuffer buffer = new StringBuffer();
-    for (int i = 0; i < SIZE; i++) {
-      if (table[i] != null) {
-        buffer.append("Position " + i + '\n');
-        for (Bucket b = table[i]; b != null; b = b.hashChild) {
-          buffer.append("    key=" + b.key + "; type=" + b.type.name() + '\n');
-          for (Bucket s = b; s != null; s = s.scopeChild)
-            buffer.append("      key=" + s.key + "; type=" + s.type.name() + '\n');
-        }
-      }
-    }
-    return buffer.toString();
-  }
-
   private class Bucket {
     private String key;
-    private DataType type;
-    private Bucket hashParent; // chains different symbols with the same hash
-                               // value
-    private Bucket hashChild;
-    private Bucket scopeParent; // chains same symbols with different scopes
-    private Bucket scopeChild;
+    private TypeExpression type;
+    private Bucket next;
 
-    private Bucket(String key, DataType type, Bucket hashParent, Bucket hashChild, Bucket scopeParent,
-        Bucket scopeChild) {
+    private Bucket(String key, TypeExpression type, Bucket next) {
       this.key = key;
       this.type = type;
-      this.hashParent = hashParent;
-      this.hashChild = hashChild;
-      this.scopeParent = scopeParent;
-      this.scopeChild = scopeChild;
+      this.next = next;
     }
   }
 }

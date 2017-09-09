@@ -1,6 +1,6 @@
 /*
  * This code is part of a compiler for the Player programming language
- * Created: 2005-2006
+ * Created: 2004-2005
  * Revised: 09/2017
  */
 package playerc.abstractsyntax;
@@ -10,24 +10,24 @@ package playerc.abstractsyntax;
  * @version 3.1
  */
 public class ArrayInitsExpression extends Expression {
-  private Identifier id;
-  private ExpressionList list;
+  private Typename typename;
+  private ArrayInitList list;
 
-  public ArrayInitsExpression(Identifier id, ExpressionList list, int lineNumber) {
+  public ArrayInitsExpression(Typename typename, ArrayInitList list, int lineNumber) {
     super(lineNumber);
-    this.id = id;
+    this.typename = typename;
     this.list = list;
-  }
-
-  public Identifier id() {
-    return id;
-  }
-
-  public ExpressionList expressions() {
-    return list;
   }
 
   public void accept(Visitor v) {
     v.visit(this);
+  }
+
+  public Typename typename() {
+    return typename;
+  }
+
+  public ArrayInitList list() {
+    return list;
   }
 }
