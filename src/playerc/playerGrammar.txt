@@ -1,0 +1,160 @@
+program -> 'program' identifier make-id body make-program   
+
+actual-params -> '(' actual-params-rest 
+actual-params-rest -> expression expressions-more-opt make-expression-list ')' 
+actual-params-rest -> ')' 
+
+array-init -> expression array-init-tail make-array-init
+array-init-tail -> 'of' expression
+array-init-tail -> Ø  
+
+array-inits -> '[<' array-init array-inits-more-opt '>]' make-array-init-list
+
+array-inits-more-opt -> ',' array-init array-inits-more-opt 
+array-inits-more-opt -> Ø 
+
+binary-op -> '+' 
+binary-op -> '-' 
+binary-op -> '*' 
+binary-op -> '/' 
+binary-op -> 'and' 
+binary-op -> 'or' 
+binary-op -> '>' 
+binary-op -> '<' 
+binary-op -> '=' 
+binary-op -> '>=' 
+binary-op -> '<=' 
+binary-op -> '<>' 
+
+body -> make-body-marker declarations-opt make-declaration-list 'begin' statements-opt make-statement-list 'end' make-body
+
+by-expression-opt -> 'by' expression make-by-expression-opt
+by-expression-opt -> Ø 
+
+declaration -> 'var' var-decls-opt 
+declaration -> 'type' type-decls-opt 
+declaration -> 'procedure' procedure-decls-opt 
+
+declarations-opt -> declaration declarations-opt 
+declarations-opt -> Ø
+
+decl-typename-opt -> ':' typename 
+decl-typename-opt -> Ø 
+
+else-opt -> 'else' statement statements-opt make-statement-list
+else-opt -> Ø 
+
+elseif -> 'elseif' exp-then-stms 
+
+elseifs-opt -> elseif elseifs-opt 
+elseifs-opt -> Ø 
+
+exp-then-stms -> expression 'then' statement statements-opt make-statement-list make-exp-then-statements
+
+expression -> 'true' make-true-expression expression-tail
+expression -> 'false' make-false-expression expression-tail
+expression -> string make-string-expression expression-tail
+expression -> integer make-integer-expression expression-tail
+expression -> real make-real-expression expression-tail 
+expression -> paren-expression
+expression -> unary-op make-operator expression make-unary-op-expression expression-tail 
+expression -> prim-typename array-inits make-array-inits-expression expression-tail 
+expression -> identifier make-id expression-id-rest
+expression -> 'null' make-null-expression
+
+paren-expression -> '(' expression ')' make-paren-expression expression-tail 
+
+expression-id-rest -> actual-params make-call-expression expression-tail 
+expression-id-rest -> make-new-typename record-inits make-record-inits-expression expression-tail 
+expression-id-rest -> make-new-typename array-inits make-array-inits-expression expression-tail 
+expression-id-rest -> make-id-lvalue lvalue-tail make-lvalue-expression expression-tail
+
+expression-tail -> binary-op make-operator expression make-binary-op-expression expression-tail 
+expression-tail -> Ø 
+
+expression-opt -> expression 
+expression-opt -> Ø 
+
+expressions-more-opt -> ',' expression expressions-more-opt 
+expressions-more-opt -> Ø 
+
+formal-params -> '(' formal-params-rest 
+formal-params-rest -> fp-section fp-sections-more-opt ')' make-fp-section-list 
+formal-params-rest -> ')' 
+
+fp-section -> identifier make-id identifiers-more-opt make-id-list ':' typename make-fp-section
+
+fp-sections-more-opt -> ';' fp-section fp-sections-more-opt 
+fp-sections-more-opt -> Ø 
+
+identifiers-more-opt -> ',' identifier make-id identifiers-more-opt 
+identifiers-more-opt -> Ø 
+
+lvalue -> identifier make-id make-id-lvalue lvalue-tail
+lvalue-tail -> '[' expression ']' make-lookup-lvalue lvalue-tail 
+lvalue-tail -> '.' identifier make-id make-deref-lvalue lvalue-tail 
+lvalue-tail -> Ø 
+
+lvalues-more-opt -> ',' lvalue lvalues-more-opt 
+lvalues-more-opt -> Ø 
+
+member -> identifier make-id ':' typename ';' make-member
+
+members-opt -> member members-opt 
+members-opt -> Ø 
+
+new-typename -> identifier make-id make-new-typename
+
+prim-typename -> 'boolean' make-prim-typename
+prim-typename -> 'integer' make-prim-typename
+prim-typename -> 'real' make-prim-typename
+prim-typename -> 'string' make-prim-typename
+
+procedure-decl -> identifier make-id make-formal-params-marker formal-params decl-typename-opt body ';' make-proc-declaration
+
+procedure-decls-opt -> procedure-decl procedure-decls-opt 
+procedure-decls-opt -> Ø 
+
+record-init -> identifier make-id ':=' expression make-record-init
+record-inits -> '{' record-init record-inits-more-opt '}' make-record-init-list
+
+record-inits-more-opt -> ';' record-init record-inits-more-opt 
+record-inits-more-opt -> Ø 
+
+statement -> 'write' make-write-marker write-params ';' make-write-statement
+statement -> 'read' make-read-marker '(' lvalue lvalues-more-opt make-lvalue-list ')' ';' make-read-statement
+statement -> 'exit' ';' make-exit-statement
+statement -> 'return' make-return-marker expression-opt ';' make-return-statement
+statement -> 'loop' make-loop-marker statement statements-opt make-statement-list 'end' ';' make-loop-statement
+statement -> 'for' identifier make-id ':=' expression 'to' expression by-expression-opt 'do' statements-opt make-statement-list 'end' ';' make-for-statement
+statement -> 'if' exp-then-stms elseifs-opt make-exp-then-statements-list else-opt 'end' ';' make-if-statement
+statement -> identifier make-id statement-id-rest 
+
+statement-id-rest -> make-id-lvalue lvalue-tail ':=' expression ';' make-assignment-statement
+statement-id-rest -> actual-params ';' make-call-statement
+
+statements-opt -> statement statements-opt 
+statements-opt -> Ø 
+
+type -> 'array' 'of' typename make-array-type
+type -> 'record' member members-opt make-member-list 'end' make-record-type
+
+type-decl -> new-typename '=' type ';' make-type-declaration
+
+type-decls-opt -> type-decl type-decls-opt 
+type-decls-opt -> Ø 
+
+typename -> new-typename
+typename -> prim-typename
+
+unary-op -> '+' 
+unary-op -> '-' 
+unary-op -> 'not' 
+
+var-decls-opt -> var-decl var-decls-opt 
+var-decls-opt -> Ø 
+var-decl -> identifier make-id identifiers-more-opt make-id-list decl-typename-opt ':=' expression ';' make-var-declaration
+
+write-params -> '(' write-params-rest 
+write-params-rest -> expression expressions-more-opt ')' make-expression-list 
+write-params-rest -> ')'
