@@ -24,7 +24,7 @@ compilation is Java and the output is a Java source file.
 
 ## Usage
 
-```java
+```
 javac playerc/*.java
 java playerc.PlayerCompiler source-file output-directory
 ```
