@@ -1,5 +1,10 @@
 # Compiler for the Player programming language
 
+> **This project is deprecated and not maintained. It exists for historical reasons only.**
+
+* **Language:** Java
+* **Developed:** 2004-2006
+
 This is a source-to-source compiler (or transpiler) from
 [Player](docs/language.md), a small imperative language, to Java. It started as
 a term project back in 2004, but then took on a life of its own and for a while
